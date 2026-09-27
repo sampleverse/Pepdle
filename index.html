@@ -72,6 +72,33 @@
     overflow-x: hidden;
     padding: 6px 4px 8px;
   }
+  .residue-pool.visible + .board.classic-wordle-board {
+    margin-top: -10px;
+  }
+  .board.classic-wordle-board {
+    width: 100%;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+  }
+  #gameScreen.classic-mode .message {
+    min-height: 20px;
+    margin: 4px 0;
+  }
+  #gameScreen.classic-mode .message:empty {
+    min-height: 10px;
+    margin: 0;
+  }
+  #gameScreen.classic-mode .input-row:not(.annotated-row) {
+    padding-top: 18px;
+    margin-bottom: 10px;
+  }
+  #gameScreen.classic-mode .action-area {
+    margin-top: 0;
+  }
+  #gameScreen.classic-mode .legend {
+    margin-top: 8px;
+  }
   .row {
     display: flex;
     gap: 6px;
@@ -110,8 +137,8 @@
   /* Give annotation pills their own breathing room without changing normal play. */
   .input-row.annotated-row {
     padding-top: 40px;
-    padding-bottom: 32px;
-    margin-bottom: 0;
+    padding-bottom: 34px;
+    margin-bottom: 6px;
   }
 
   /* Long peptides get slightly tighter gaps, but the residue boxes stay readable. */
@@ -127,12 +154,14 @@
 
   .input-row.long-sequence.annotated-row {
     padding-top: 34px;
-    padding-bottom: 28px;
+    padding-bottom: 30px;
+    margin-bottom: 5px;
   }
 
   .input-row.long-sequence.compact-annotated-row {
     padding-top: 32px;
-    padding-bottom: 29px;
+    padding-bottom: 31px;
+    margin-bottom: 5px;
   }
   select {
     background: var(--tile-bg);
@@ -276,6 +305,88 @@
   }
   .residue-chip.used.repeat-used {
     color: #f8f9fb;
+  }
+
+  #gameScreen.classic-mode #infoBox {
+    margin-bottom: 12px;
+  }
+  .classic-residue-section {
+    margin-bottom: 0;
+  }
+  .classic-evidence-divider {
+    height: 1px;
+    margin: 12px 0;
+    background: rgba(70, 80, 95, 0.65);
+  }
+  .residue-pool.integrated-pool {
+    display: block;
+    max-width: none;
+    width: auto;
+    margin: 0;
+    padding: 10px 0 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+  }
+  .residue-pool.integrated-pool:not(.visible) {
+    display: none;
+  }
+  .residue-pool.integrated-pool .residue-pool-header {
+    margin-bottom: 9px;
+  }
+
+  .classic-evidence-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    color: #9aa3b2;
+    font-size: 0.76rem;
+    line-height: 1.35;
+  }
+  .classic-evidence-stage {
+    font-weight: 700;
+    color: #cbd2dc;
+    white-space: nowrap;
+  }
+  .classic-next-unlock {
+    color: #7f8998;
+    text-align: right;
+  }
+  .classic-special-clues {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 4px;
+  }
+  .classic-special-clue {
+    padding: 7px 9px;
+    border-radius: 8px;
+    background: rgba(52, 59, 72, 0.58);
+    border: 1px solid rgba(70, 80, 95, 0.68);
+    font-size: 0.8rem;
+  }
+
+  .classic-empty-evidence {
+    padding: 10px 12px;
+    border-radius: 9px;
+    border: 1px dashed rgba(70, 80, 95, 0.72);
+    background: rgba(42, 47, 58, 0.34);
+    color: #8892a2;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    text-align: center;
+  }
+  .classic-reveal-new {
+    animation: classicEvidenceReveal 0.34s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes classicEvidenceReveal {
+    from { opacity: 0; transform: translateY(7px); filter: brightness(1.16); }
+    to { opacity: 1; transform: translateY(0); filter: brightness(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .classic-reveal-new { animation: none; }
   }
 
   .info-box.wide-sequence {
@@ -886,8 +997,7 @@
     justify-self: start;
     padding: 7px 14px;
     font-size: 0.82rem;
-    visibility: hidden;
-  }
+    visibility: hidden;  }
   #backToMenuBtn,
   #startClassicBtn,
   #startPracticeBtn {
@@ -920,13 +1030,258 @@
     margin: 0;
     text-align: center;
   }
-  .menu-note {
-    max-width: 360px;
-    margin-top: 2px;
+  .menu-panel {
+    width: min(520px, calc(100vw - 40px));
+    padding: 30px 30px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    background: rgba(42, 47, 58, 0.78);
+    border: 1px solid rgba(111, 168, 255, 0.14);
+    border-radius: 18px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+  }
+  .menu-kicker {
+    color: #7f8998;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     text-align: center;
-    color: #98a2b3;
-    font-size: 0.82rem;
-    line-height: 1.45;
+  }
+  .menu-title {
+    margin: 0 0 8px;
+    color: var(--text);
+    font-size: 1.3rem;
+    font-weight: 800;
+    text-align: center;
+  }
+  .mode-choice {
+    width: 100%;
+    min-height: 82px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 13px;
+    text-align: left;
+    border-radius: 14px;
+    background: rgba(52, 59, 72, 0.56);
+    border: 1px solid rgba(70, 80, 95, 0.95);
+    color: var(--text);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+  }
+  .mode-choice:hover {
+    transform: translateY(-2px);
+    background: rgba(58, 66, 81, 0.76);
+  }
+  .mode-choice:active {
+    transform: translateY(0);
+  }
+  .mode-choice.primary-mode {
+    border-color: rgba(111, 168, 255, 0.28);
+  }
+  .mode-choice.primary-mode:hover {
+    border-color: rgba(111, 168, 255, 0.56);
+    box-shadow: 0 10px 26px rgba(10, 16, 28, 0.24), 0 0 0 1px rgba(111, 168, 255, 0.08) inset;
+  }
+  .mode-choice.secondary-mode {
+    border-color: rgba(89, 200, 179, 0.22);
+  }
+  .mode-choice.secondary-mode:hover {
+    border-color: rgba(89, 200, 179, 0.48);
+    box-shadow: 0 10px 26px rgba(10, 16, 28, 0.24), 0 0 0 1px rgba(89, 200, 179, 0.07) inset;
+  }
+  .mode-choice-icon {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.15rem;
+    background: rgba(52, 59, 72, 0.98);
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.16);
+  }
+  .primary-mode .mode-choice-icon {
+    border-color: rgba(111, 168, 255, 0.24);
+    background: rgba(53, 65, 85, 0.95);
+  }
+  .secondary-mode .mode-choice-icon {
+    border-color: rgba(89, 200, 179, 0.22);
+    background: rgba(48, 66, 69, 0.92);
+  }
+  .mode-choice-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .mode-choice-name {
+    font-size: 0.98rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+  .mode-choice-desc {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    font-weight: 550;
+    opacity: 0.76;
+  }
+  .mode-choice-arrow {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    transform: translateX(0);
+    transition: transform 160ms ease, color 160ms ease, opacity 160ms ease;
+  }
+  .primary-mode .mode-choice-arrow {
+    color: #6FA8FF;
+  }
+  .secondary-mode .mode-choice-arrow {
+    color: #59C8B3;
+  }
+  .mode-choice:hover .mode-choice-arrow {
+    transform: translateX(2px);
+    opacity: 1;
+  }
+  .menu-note {
+    margin-top: 6px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+    color: #8f99a8;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: #1b1f27;
+    opacity: 0;
+    transition: opacity 180ms ease;
+  }
+  .loading-screen.visible {
+    display: flex;
+  }
+  .loading-screen.active {
+    opacity: 1;
+  }
+  .loading-card {
+    width: min(520px, calc(100vw - 40px));
+    padding: 34px 36px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: rgba(42, 47, 58, 0.78);
+    border: 1px solid rgba(111, 168, 255, 0.14);
+    border-radius: 18px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
+    transform: translateY(8px) scale(0.992);
+    transition: transform 240ms ease;
+  }
+  .loading-screen.active .loading-card {
+    transform: translateY(0) scale(1);
+  }
+  .loading-logo {
+    font-size: clamp(2.25rem, 4vw, 3.1rem);
+    font-weight: 850;
+    letter-spacing: 0.5px;
+    color: var(--text);
+    margin-bottom: 5px;
+  }
+  .loading-kicker {
+    color: #7f8998;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .loading-copy {
+    color: #c1c8d2;
+    font-size: 0.98rem;
+    font-weight: 650;
+    margin-bottom: 18px;
+  }
+  .loading-track {
+    width: min(360px, 100%);
+    height: 7px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #232935;
+    border: 1px solid rgba(111, 168, 255, 0.16);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+  }
+  .loading-progress {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, rgba(111,168,255,0.52), #6fa8ff);
+    box-shadow: 0 0 12px rgba(111,168,255,0.14);
+    transition: width 420ms cubic-bezier(.22,.72,.28,1);
+  }
+  .loading-trivia {
+    width: min(420px, 100%);
+    margin-top: 22px;
+    min-height: 46px;
+    color: #aab3c0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 240ms ease, transform 240ms ease;
+  }
+  .loading-screen.active .loading-trivia {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .loading-trivia-label {
+    color: #d3d8e0;
+    font-weight: 750;
+  }
+
+  .screen-transition {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 180ms ease, transform 220ms ease;
+    will-change: opacity, transform;
+  }
+  .screen-transition.screen-leaving {
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+  }
+  .screen-transition.screen-entering {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .screen-transition.screen-entering.screen-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .screen-transition,
+    .loading-screen,
+    .loading-card {
+      transition: none;
+      transform: none !important;
+    }
+    .loading-progress {
+      transition: none;
+    }
+    .loading-trivia {
+      transition: none;
+      transform: none;
+    }
   }
   @media (max-width: 640px) {
     .site-header {
@@ -936,10 +1291,66 @@
       padding: 6px 12px;
       font-size: 0.78rem;
     }
+    .loading-card {
+      width: min(92vw, 420px);
+      padding: 28px 22px 24px;
+      border-radius: 16px;
+    }
+    .loading-logo {
+      font-size: 2rem;
+    }
+    .loading-kicker {
+      font-size: 0.68rem;
+      margin-bottom: 20px;
+    }
+    .loading-copy {
+      font-size: 0.9rem;
+    }
+    .loading-trivia {
+      margin-top: 18px;
+      font-size: 0.84rem;
+      min-height: 42px;
+    }
+    .menu-panel {
+      width: min(92vw, 420px);
+      padding: 24px 18px 20px;
+      border-radius: 16px;
+    }
+    .menu-title {
+      font-size: 1.18rem;
+    }
+    .mode-choice {
+      min-height: 76px;
+      padding: 12px 13px;
+      gap: 11px;
+    }
+    .mode-choice-icon {
+      width: 34px;
+      height: 34px;
+      font-size: 1.02rem;
+    }
+    .mode-choice-name {
+      font-size: 0.92rem;
+    }
+    .mode-choice-desc {
+      font-size: 0.73rem;
+    }
   }
 </style>
 </head>
 <body>
+
+<div id="loadingScreen" class="loading-screen" aria-hidden="true">
+  <div class="loading-card">
+    <div class="loading-logo">🧬 Pepdle</div>
+    <div class="loading-kicker">Peptide Sequencing Game</div>
+    <div class="loading-copy" id="loadingCopy">Preparing peptide sequence…</div>
+    <div class="loading-track" aria-hidden="true">
+      <div class="loading-progress" id="loadingProgress"></div>
+    </div>
+    <div class="loading-trivia" id="loadingTrivia"></div>
+  </div>
+</div>
 
 <div class="site-header">
   <button type="button" class="secondary" id="backToMenuBtn" onclick="showMenuScreen()">‹ Menu</button>
@@ -947,18 +1358,34 @@
   <div class="site-header-spacer" aria-hidden="true"></div>
 </div>
 
-<div id="menuScreen" style="display:flex; flex-direction:column; align-items:center; gap:14px; margin-top:20px;">
-  <div class="subtitle">Choose a mode</div>
-  <button type="button" id="startClassicBtn" onclick="startClassicMode()" style="width:280px; padding:16px; font-size:1rem;">
-    🧬 Pepdle Classic
-  </button>
-  <button type="button" id="startPracticeBtn" class="secondary" onclick="startPracticeMode()" style="width:280px; padding:16px; font-size:1rem;">
-    🔬 Practice Mode
-  </button>
-  <div class="menu-note">A rudimentary silly thingy, still being worked on by yours truly, John Rec.</div>
+<div id="menuScreen" class="screen-transition" style="display:flex; flex-direction:column; align-items:center; margin-top:20px;">
+  <div class="menu-panel">
+    <div class="menu-kicker">Peptide Sequencing Game</div>
+    <h2 class="menu-title">Choose a mode</h2>
+
+    <button type="button" id="startClassicBtn" class="mode-choice primary-mode" onclick="startClassicMode()">
+      <span class="mode-choice-icon">🧬</span>
+      <span class="mode-choice-copy">
+        <span class="mode-choice-name">Pepdle Classic</span>
+        <span class="mode-choice-desc">Limited attempts. Earn sequencing evidence as you play.</span>
+      </span>
+      <span class="mode-choice-arrow" aria-hidden="true">›</span>
+    </button>
+
+    <button type="button" id="startPracticeBtn" class="mode-choice secondary-mode" onclick="startPracticeMode()">
+      <span class="mode-choice-icon">🔬</span>
+      <span class="mode-choice-copy">
+        <span class="mode-choice-name">Practice Mode</span>
+        <span class="mode-choice-desc">Guided clues, hints, and flexible practice settings.</span>
+      </span>
+      <span class="mode-choice-arrow" aria-hidden="true">›</span>
+    </button>
+
+    <div class="menu-note">A rudimentary silly thingy, still being worked on by yours truly, John Rec.</div>
+  </div>
 </div>
 
-<div id="gameScreen" style="display:none; width:100%; max-width:760px; flex-direction:column; align-items:center;">
+<div id="gameScreen" class="screen-transition" style="display:none; width:100%; max-width:760px; flex-direction:column; align-items:center;">
 
 <div class="mode-hero">
   <div class="mode-badge" id="modeBadge">Practice Mode</div>
@@ -997,7 +1424,8 @@
         <div class="custom-field-header">
           <label for="enzymeSelect">Enzymes</label>
           <span class="value-chip" id="enzymeValue">2</span>
-        </div>        <input id="enzymeSelect" type="range" min="1" max="4" step="1" value="2">
+        </div>
+        <input id="enzymeSelect" type="range" min="1" max="4" step="1" value="2">
         <div class="slider-scale"><span>1</span><span>4</span></div>
       </div>
       <div class="custom-field">
@@ -1182,16 +1610,154 @@ function applyPreset(name) {
   syncCustomControlUI();
 }
 
-function showMenuScreen() {
-  document.getElementById("menuScreen").style.display = "flex";
-  document.getElementById("gameScreen").style.display = "none";
-  document.getElementById("backToMenuBtn").style.visibility = "hidden";
+function transitionBetweenScreens(fromEl, toEl, toDisplay, afterShow) {
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const leaveDuration = reducedMotion ? 0 : 180;
+
+  const finishSwap = () => {
+    if (fromEl) {
+      fromEl.style.display = "none";
+      fromEl.classList.remove("screen-leaving");
+    }
+
+    toEl.style.display = toDisplay;
+    toEl.classList.add("screen-entering");
+
+    if (typeof afterShow === "function") afterShow();
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        toEl.classList.add("screen-enter-active");
+        toEl.classList.remove("screen-entering");
+        window.setTimeout(() => toEl.classList.remove("screen-enter-active"), reducedMotion ? 0 : 240);
+      });
+    });
+  };
+
+  if (!fromEl || fromEl.style.display === "none" || reducedMotion) {
+    finishSwap();
+    return;
+  }
+
+  fromEl.classList.add("screen-leaving");
+  window.setTimeout(finishSwap, leaveDuration);
 }
 
-function showGameScreen() {
-  document.getElementById("menuScreen").style.display = "none";
-  document.getElementById("gameScreen").style.display = "flex";
+function showMenuScreen(animate = true) {
+  const menu = document.getElementById("menuScreen");
+  const game = document.getElementById("gameScreen");
+  document.getElementById("backToMenuBtn").style.visibility = "hidden";
+
+  if (!animate) {
+    menu.style.display = "flex";
+    game.style.display = "none";
+    return;
+  }
+
+  transitionBetweenScreens(game, menu, "flex");
+}
+
+function showGameScreen(afterShow) {
+  const menu = document.getElementById("menuScreen");
+  const game = document.getElementById("gameScreen");
   document.getElementById("backToMenuBtn").style.visibility = "visible";
+  transitionBetweenScreens(menu, game, "flex", afterShow);
+}
+
+function showInitialLoadingScreen() {
+  const loading = document.getElementById("loadingScreen");
+  const menu = document.getElementById("menuScreen");
+  const game = document.getElementById("gameScreen");
+  const copy = document.getElementById("loadingCopy");
+  const progress = document.getElementById("loadingProgress");
+  const trivia = document.getElementById("loadingTrivia");
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  const loadingMessages = [
+    { type: "fact", text: "Trypsin cleaves on the C-terminal side of Lys and Arg." },
+    { type: "fact", text: "CNBr cleaves on the C-terminal side of methionine." },
+    { type: "fact", text: "The N-terminus is the amino end of a peptide chain." },
+    { type: "fact", text: "Using multiple cleavage methods can help reconstruct a peptide sequence." },
+    { type: "fact", text: "Chymotrypsin commonly cleaves after aromatic residues such as Phe, Tyr, and Trp." },
+    { type: "fact", text: "Amino-acid composition tells you which residues are present, but not their order." },
+    { type: "fact", text: "Overlapping fragments are often the key to reconstructing a full peptide sequence." },
+    { type: "fact", text: "The C-terminus is the carboxyl end of a peptide chain." },
+    { type: "note", text: "For you my Biochem oomfs :3" },
+    { type: "note", text: "How's Pre-Med coming along?" },
+    { type: "note", text: "Uhhh.. Hopefully not cramming for exams? (I did)" },
+    { type: "note", text: "Still debating if the fake loading screen should be between 6-7s long" },
+    { type: "note", text: "How many liters does it take fill the alphabet?" },
+    { type: "note", text: "I've ran out of witty jokes" },
+    { type: "note", text: "Peptides + Wordle = Pepdle, Get it?" },
+    { type: "note", text: "I hope my Biochem Prof likes this" },
+    { type: "note", text: "I hope my Biochem Ph.d oomf likes this :3" },
+    { type: "note", text: "I hope my Biochem Prof and Ph.d oomf like this" },
+    { type: "note", text: "Special thanks to my early testers :3" }
+  ];
+
+  const loadDuration = 3000 + Math.floor(Math.random() * 2001);
+  const selectedMessage = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
+
+  document.getElementById("backToMenuBtn").style.visibility = "hidden";
+  game.style.display = "none";
+  menu.style.display = "none";
+
+  if (copy) copy.textContent = "Preparing Pepdle…";
+  if (trivia) {
+    trivia.innerHTML = selectedMessage.type === "fact"
+      ? `<span class="loading-trivia-label">Did you know?</span> ${selectedMessage.text}`
+      : selectedMessage.text;
+  }
+  if (progress) progress.style.width = "0%";
+
+  if (!loading) {
+    menu.style.display = "flex";
+    return;
+  }
+
+  loading.classList.add("visible");
+  loading.setAttribute("aria-hidden", "false");
+  requestAnimationFrame(() => requestAnimationFrame(() => loading.classList.add("active")));
+
+  if (progress) {
+    if (reducedMotion) {
+      progress.style.width = "100%";
+    } else {
+      const stages = [
+        [0.10, 18],
+        [0.28, 37],
+        [0.50, 61],
+        [0.72, 78],
+        [0.89, 91],
+        [0.97, 97]
+      ];
+      stages.forEach(([fraction, percent]) => {
+        window.setTimeout(() => {
+          progress.style.width = `${percent}%`;
+        }, Math.round(loadDuration * fraction));
+      });
+    }
+  }
+
+  window.setTimeout(() => {
+    if (progress) progress.style.width = "100%";
+
+    window.setTimeout(() => {
+      menu.style.display = "flex";
+      menu.classList.add("screen-entering");
+      loading.classList.remove("active");
+
+      window.setTimeout(() => {
+        loading.classList.remove("visible");
+        loading.setAttribute("aria-hidden", "true");
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          menu.classList.add("screen-enter-active");
+          menu.classList.remove("screen-entering");
+          window.setTimeout(() => menu.classList.remove("screen-enter-active"), 240);
+        }));
+      }, 180);
+    }, reducedMotion ? 0 : 180);
+  }, loadDuration);
 }
 
 function startClassicMode() {
@@ -1200,8 +1766,7 @@ function startClassicMode() {
   document.getElementById("modeBadge").textContent = "Pepdle Classic";
   document.getElementById("modeSubtitle").textContent =
     "Start with one clue set and unlock more as you make guesses.";
-  showGameScreen();
-  newGame();
+  showGameScreen(() => newGame());
 }
 
 function startPracticeMode() {
@@ -1210,8 +1775,7 @@ function startPracticeMode() {
   document.getElementById("modeBadge").textContent = "Practice Mode";
   document.getElementById("modeSubtitle").textContent =
     "Practice peptide sequencing with guided clues and hints.";
-  showGameScreen();
-  handlePresetChange();
+  showGameScreen(() => handlePresetChange());
 }
 
 function handlePresetChange() {
@@ -1262,6 +1826,17 @@ let gameOver = false;
 let isPepdleMode = false;
 let pepdleClueQueue = [];
 let pepdleRevealCount = 0;
+let classicRevealStage = -1;
+let lastClassicSubmittedGuess = null;
+let lastClassicAnimatedStage = -1;
+
+const CLASSIC_REVEAL_LADDER = [
+  { id: "enzyme1", label: "First enzyme digestion", enzymeCount: 1 },
+  { id: "enzyme2", label: "Second enzyme digestion", enzymeCount: 2 },
+  { id: "nterm", label: "N-terminus identified", enzymeCount: 2, revealNTerm: true },
+  { id: "cut1", label: "Cleavage-site result", enzymeCount: 2, cutIndex: 0 },
+  { id: "cterm", label: "C-terminus identified", enzymeCount: 2, cutIndex: 0, revealCTerm: true }
+];
 let currentTopMode = "practice"; // "practice" or "classic"
 let lastRoundClues = [];
 let currentPracticeOrdered = true;
@@ -1342,24 +1917,118 @@ function buildPepdleRound(len) {
   return { peptide, clueQueue };
 }
 
-function renderPepdleInfo() {
-  const total = pepdleClueQueue.length;
-  const shown = pepdleClueQueue.slice(0, pepdleRevealCount);
-  const blocks = shown.map(c => {
-    const fragHtml = c.frags.map(f => `<div class="frag">${shuffle(f).join(", ")}</div>`).join("");
+function getClassicRevealState() {
+  const hasEvidence = classicRevealStage >= 0;
+  const safeStageIndex = hasEvidence
+    ? Math.min(classicRevealStage, CLASSIC_REVEAL_LADDER.length - 1)
+    : -1;
+  const stage = safeStageIndex >= 0 ? CLASSIC_REVEAL_LADDER[safeStageIndex] : null;
+  const enzymeCount = stage ? Math.min(stage.enzymeCount || 0, pepdleClueQueue.length) : 0;
+  const shownEnzymes = pepdleClueQueue.slice(0, enzymeCount);
+
+  const boundaryEntries = Object.entries(computeCutBoundaries(shownEnzymes.map(c => c.name)))
+    .map(([boundary, names]) => ({ boundary: Number(boundary), names }))
+    .sort((a, b) => a.boundary - b.boundary);
+
+  const revealedCutResults = [];
+  const seenBoundaries = new Set();
+  const earnedStages = safeStageIndex >= 0
+    ? CLASSIC_REVEAL_LADDER.slice(0, safeStageIndex + 1)
+    : [];
+
+  earnedStages.forEach(revealStage => {
+    if (typeof revealStage.cutIndex !== "number" || !boundaryEntries.length) return;
+    const result = boundaryEntries[Math.min(revealStage.cutIndex, boundaryEntries.length - 1)];
+    if (!result || seenBoundaries.has(result.boundary)) return;
+    seenBoundaries.add(result.boundary);
+    revealedCutResults.push(result);
+  });
+
+  const revealNTerm = earnedStages.some(revealStage => revealStage.revealNTerm);
+  const revealCTerm = earnedStages.some(revealStage => revealStage.revealCTerm);
+  const cutResult = revealedCutResults.length ? revealedCutResults[revealedCutResults.length - 1] : null;
+  return { stage, enzymeCount, shownEnzymes, cutResult, revealedCutResults, revealNTerm, revealCTerm };
+}
+
+function syncClassicRevealToAttempts() {
+  if (!isPepdleMode) return null;
+
+  // The residue pool is baseline information. Each failed committed guess earns
+  // exactly one sequencing-evidence stage, beginning with the first digestion.
+  const targetStage = Math.min(currentGuessIndex - 1, CLASSIC_REVEAL_LADDER.length - 1);
+  if (targetStage < 0 || targetStage <= classicRevealStage) return null;
+
+  classicRevealStage = targetStage;
+  renderPepdleInfo(true);
+  return CLASSIC_REVEAL_LADDER[classicRevealStage];
+}
+
+function renderPepdleInfo(animateNewStage = false) {
+  const state = getClassicRevealState();
+  pepdleRevealCount = state.enzymeCount;
+
+  const newestStage = classicRevealStage;
+  const shouldAnimateStage = animateNewStage && newestStage >= 0 && newestStage !== lastClassicAnimatedStage;
+
+  const blocks = state.shownEnzymes.map((c, clueIndex) => {
+    const color = ENZYME_COLORS[c.name] || "var(--accent)";
+    const fragHtml = c.frags.map((f, fragIndex) => {
+      const display = shuffle(f)
+        .map(aa => `<span class="frag-aa">${aa}</span>`)
+        .join('<span class="frag-sep">, </span>');
+      return `<div class="frag trackable-frag classic-trackable-frag" data-classic-clue-index="${clueIndex}" data-classic-frag-index="${fragIndex}" style="--frag-color:${color};">${display}</div>`;
+    }).join("");
+    const newlyRevealed = shouldAnimateStage && state.stage && state.stage.id.startsWith("enzyme") && state.stage.enzymeCount === clueIndex + 1;
     return `
-      <div style="margin-bottom:10px;">
-        <div><b>${c.name}</b> fragments (composition only, no order given):</div>
+      <div class="${newlyRevealed ? 'classic-reveal-new' : ''}" style="margin-bottom:10px;">
+        <div><b style="color:${color};">${c.name}</b> fragments (composition only, no order given):</div>
         <div class="fragments">${fragHtml}</div>
       </div>`;
   }).join("");
+
+  const unlocks = [];
+  if (state.revealNTerm) {
+    const cls = shouldAnimateStage && state.stage?.revealNTerm ? ' classic-reveal-new' : '';
+    unlocks.push(`<div class="classic-special-clue${cls}"><b style="color:#5fc4d6;">N-Terminus</b> · ${secret[0]}</div>`);
+  }
+  state.revealedCutResults.forEach((cutResult, index) => {
+    const label = state.revealedCutResults.length > 1 ? `Cleavage-site result ${index + 1}` : `Cleavage-site result`;
+    const cls = shouldAnimateStage && typeof state.stage?.cutIndex === "number" && index === state.revealedCutResults.length - 1 ? ' classic-reveal-new' : '';
+    unlocks.push(`<div class="classic-special-clue${cls}"><b style="color:#c7ced9;">${label}</b> · ${cutResult.names.join(" / ")} cuts between positions ${cutResult.boundary} and ${cutResult.boundary + 1}.</div>`);
+  });
+  if (state.revealCTerm) {    const cls = shouldAnimateStage && state.stage?.revealCTerm ? ' classic-reveal-new' : '';
+    unlocks.push(`<div class="classic-special-clue${cls}"><b style="color:#d9818f;">C-Terminus</b> · ${secret[secret.length - 1]}</div>`);
+  }
+
+  const unlockedCount = Math.max(0, classicRevealStage + 1);
+  const nextStage = CLASSIC_REVEAL_LADDER[classicRevealStage + 1];
+  const nextText = nextStage
+    ? `Next miss: ${nextStage.label}`
+    : `All sequencing evidence unlocked`;
+
+  const emptyState = unlockedCount === 0
+    ? `<div class="classic-empty-evidence">No sequencing experiments revealed yet.<br>Submit your first sequence hypothesis to begin.</div>`
+    : "";
+
   document.getElementById("infoBox").innerHTML = `
-    <div style="margin-bottom:6px; color:#9aa3b2; font-size:0.8rem;">
-      Pepdle Classic: ${pepdleRevealCount} of ${total} enzyme clue(s) revealed. Each wrong guess unlocks one more.
+    <div class="classic-evidence-head">
+      <span class="classic-evidence-stage">Sequencing Evidence · ${unlockedCount}/${CLASSIC_REVEAL_LADDER.length} unlocked</span>
+      <span class="classic-next-unlock">${nextText}</span>
     </div>
+    <div class="classic-residue-section">
+      <div id="classicResiduePoolMount"></div>
+    </div>
+    <div class="classic-evidence-divider"></div>
+    ${emptyState}
     ${blocks}
-    <div style="margin-top:4px;">Guess the full ${LEN}-residue sequence below.</div>
+    ${unlocks.length ? `<div class="classic-special-clues">${unlocks.join("")}</div>` : ""}
+    <div style="margin-top:9px;">Guess the full ${LEN}-residue sequence below.</div>
   `;
+
+  syncResiduePoolPlacement();
+  if (shouldAnimateStage) lastClassicAnimatedStage = newestStage;
+  updateClassicFragmentTracking(lastClassicSubmittedGuess);
+  applyClassicEarnedAnnotations();
 }
 
 function renderInfo(clues, ordered) {
@@ -1389,6 +2058,7 @@ function renderInfo(clues, ordered) {
     ${blocks}
     <div style="margin-top:4px;">Figure out the order, then guess the full ${LEN}-residue sequence below.</div>
   `;
+  syncResiduePoolPlacement();
   updateFragmentTracking();
 }
 
@@ -1421,6 +2091,42 @@ function multisetContained(windowSeq, fragment) {
     counts[v]--;
   }
   return Object.values(counts).every(v => v === 0);
+}
+
+function updateClassicFragmentTracking(sequence) {
+  if (!isPepdleMode) return;
+
+  const state = getClassicRevealState();
+  document.querySelectorAll('.classic-trackable-frag').forEach(el => {
+    el.classList.remove('partial', 'complete', 'composition-partial');
+
+    if (!sequence || sequence.length !== LEN) return;
+
+    const clueIndex = parseInt(el.dataset.classicClueIndex, 10);
+    const fragIndex = parseInt(el.dataset.classicFragIndex, 10);
+    const frag = state.shownEnzymes[clueIndex]?.frags?.[fragIndex];
+    if (!frag) return;
+
+    const needed = {};
+    frag.forEach(v => needed[v] = (needed[v] || 0) + 1);
+    const present = {};
+    sequence.forEach(v => present[v] = (present[v] || 0) + 1);
+    const matchedResidues = Object.keys(needed)
+      .reduce((sum, aa) => sum + Math.min(needed[aa], present[aa] || 0), 0);
+
+    let complete = false;
+    if (frag.length <= sequence.length) {
+      for (let i = 0; i <= sequence.length - frag.length; i++) {
+        if (multisetContained(sequence.slice(i, i + frag.length), frag)) {
+          complete = true;
+          break;
+        }
+      }
+    }
+
+    if (complete) el.classList.add('complete');
+    else if (matchedResidues > 0) el.classList.add('partial', 'composition-partial');
+  });
 }
 
 function updateFragmentTracking() {
@@ -1475,12 +2181,33 @@ function updateFragmentTracking() {
 }
 
 
+function syncResiduePoolPlacement() {
+  const panel = document.getElementById("residuePool");
+  const infoBox = document.getElementById("infoBox");
+  if (!panel || !infoBox) return;
+
+  if (currentTopMode === "classic") {
+    const mount = document.getElementById("classicResiduePoolMount");
+    if (mount && panel.parentElement !== mount) {
+      mount.appendChild(panel);
+    }
+    panel.classList.add("integrated-pool");
+  } else {
+    if (panel.parentElement !== infoBox.parentElement || panel.previousElementSibling !== infoBox) {
+      infoBox.insertAdjacentElement("afterend", panel);
+    }
+    panel.classList.remove("integrated-pool");
+  }
+}
+
+
 function renderResiduePool() {
+  syncResiduePoolPlacement();
   const panel = document.getElementById("residuePool");
   const chips = document.getElementById("residuePoolChips");
   if (!panel || !chips) return;
 
-  if (isPepdleMode || !secret.length) {
+  if (!secret.length) {
     panel.classList.remove("visible");
     chips.innerHTML = "";
     residuePoolOrder = [];
@@ -1506,7 +2233,7 @@ function renderResiduePool() {
 function updateResiduePool() {
   const panel = document.getElementById("residuePool");
   const countEl = document.getElementById("residuePoolCount");
-  if (!panel || !countEl || isPepdleMode || !residuePoolOrder.length) return;
+  if (!panel || !countEl || !residuePoolOrder.length) return;
 
   const typedCounts = {};
   for (let i = 0; i < LEN; i++) {
@@ -1751,6 +2478,7 @@ function renderBoard() {
   const board = document.getElementById("board");
   board.innerHTML = "";
   board.classList.toggle("practice-progressive-board", !isPepdleMode);
+  board.classList.toggle("classic-wordle-board", isPepdleMode);
 
   // Classic keeps the familiar full Wordle-style grid.
   if (isPepdleMode) {
@@ -1876,10 +2604,13 @@ function toggleHintMenu() {
 
 function newGame() {
   isPepdleMode = (currentTopMode === "classic");
+  const gameScreen = document.getElementById("gameScreen");
+  if (gameScreen) gameScreen.classList.toggle("classic-mode", isPepdleMode);
 
   guessesLeft = MAX_GUESSES;
   currentGuessIndex = 0;
   gameOver = false;
+  lastClassicSubmittedGuess = null;
   revealedCutHintBoundaries = [];
 
   document.getElementById("fragmentMapPanel").style.display = "none";
@@ -1902,11 +2633,11 @@ function newGame() {
     const round = buildPepdleRound(LEN);
     secret = round.peptide;
     pepdleClueQueue = round.clueQueue;
-    pepdleRevealCount = 1;
+    classicRevealStage = -1;
+    lastClassicAnimatedStage = -1;
+    pepdleRevealCount = 0;
     renderPepdleInfo();
-    residuePoolOrder = [];
-    const residuePool = document.getElementById("residuePool");
-    if (residuePool) residuePool.classList.remove("visible");
+    renderResiduePool();
     return;
   }
 
@@ -1996,7 +2727,8 @@ function renderCutMap(enzymeNames) {
     html += `<div style="width:${tileSize}px; height:${tileSize}px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#343b48; border-radius:6px; font-weight:700; font-size:0.75rem;">${aa}</div>`;
 
     if (i < secret.length - 1) {
-      const boundaryIndex = i + 1;      const cutHere = boundaries[boundaryIndex];
+      const boundaryIndex = i + 1;
+      const cutHere = boundaries[boundaryIndex];
       if (cutHere && cutHere.length) {
         html += `
           <div style="display:flex; flex-direction:column; align-items:center; margin:0 4px; min-width:52px; flex-shrink:0;">
@@ -2215,6 +2947,46 @@ function setTerminusSideLabel(input, text, side, color) {
   wrap.appendChild(label);
 }
 
+function applyClassicEarnedAnnotations() {
+  if (!isPepdleMode) return;
+
+  const state = getClassicRevealState();
+  const row = document.getElementById("inputRow");
+  if (!row) return;
+
+  // Cut-site evidence is cumulative: once Classic earns a cleavage boundary,
+  // that boundary remains visible for the rest of the round.
+  const allowedBoundaries = state.revealedCutResults.map(result => result.boundary);
+  if (allowedBoundaries.length) {
+    annotateCutLines(
+      "inputRow",
+      state.shownEnzymes.map(c => c.name),
+      true,
+      allowedBoundaries
+    );
+  }
+
+  if (state.revealNTerm) {
+    const first = document.getElementById("sel0");
+    if (first) {
+      first.classList.add("n-term-hint");
+      setTerminusSideLabel(first, "N-Term", "left", "#5fc4d6");
+    }
+  }
+
+  if (state.revealCTerm) {
+    const last = document.getElementById("sel" + (LEN - 1));
+    if (last) {
+      last.classList.add("c-term-final");
+      setTerminusSideLabel(last, "C-Term", "right", "#d9818f");
+    }
+  }
+
+  if (state.revealNTerm || state.revealCTerm) {
+    updateDuplicateHighlights();
+  }
+}
+
 function highlightNTermHint() {
   const first = document.getElementById("sel0");
   if (!first) return;
@@ -2223,8 +2995,7 @@ function highlightNTermHint() {
 }
 
 function highlightFinalTermini() {
-  const first = document.getElementById("sel0");
-  const last = document.getElementById("sel" + (LEN - 1));
+  const first = document.getElementById("sel0");  const last = document.getElementById("sel" + (LEN - 1));
 
   if (first) {
     first.classList.remove("n-term-hint");
@@ -2304,9 +3075,14 @@ function submitGuess() {
 
   const won = feedback.every(f => f === "green");
 
-  if (isPepdleMode && !won && pepdleRevealCount < pepdleClueQueue.length) {
-    pepdleRevealCount++;
-    renderPepdleInfo();
+  if (isPepdleMode) {
+    lastClassicSubmittedGuess = guess.slice();
+    updateClassicFragmentTracking(lastClassicSubmittedGuess);
+  }
+
+  let classicUnlockedStage = null;
+  if (isPepdleMode && !won) {
+    classicUnlockedStage = syncClassicRevealToAttempts();
   }
 
   if (won) {
@@ -2330,7 +3106,10 @@ function submitGuess() {
     if (!isPepdleMode) renderCutMap(lastRoundClues.map(c => c.name));
   } else {
     const note = !isPepdleMode ? generateFeedbackNote(guess, secret, lastRoundClues.map(c => c.name)) : "";
-    setMessage(guessesLeft + " guess(es) left." + (note ? " " + note : ""));
+    const classicUnlockNote = isPepdleMode && classicUnlockedStage
+      ? ` New evidence unlocked: ${classicUnlockedStage.label}.`
+      : "";
+    setMessage(guessesLeft + " guess(es) left." + classicUnlockNote + (note ? " " + note : ""));
     for (let i = 0; i < LEN; i++) {
       const box = document.getElementById("sel" + i);
       box.value = "";
@@ -2447,7 +3226,7 @@ window.addEventListener("resize", () => {
     fitRowWithoutScroll("inputRow");
   }
 });
-showMenuScreen();
+showInitialLoadingScreen();
 </script>
 </body>
 </html>
