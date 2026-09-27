@@ -4,7 +4,7 @@
 
 [Play Pepdle here](https://sampleverse.github.io/Pepdle/)
 
-Not really sure what i cooked up in here i just thought it'd be funny if i made a Wordle game but for DNA sequencing. I hated biochem so much i suddenly wanted a viable learning material for teaching Polypeptide Sequencing. Here we are with Pepdle
+Biochem prelims so bad i had to go through several DNA sequencing practice sets- A funny thought came to me "What if i just made Polypeptide Sequencing into Wordle?" and so here we are with Pepdle
 
 ## About
 
@@ -14,7 +14,7 @@ Players reconstruct an unknown peptide sequence using information from different
 
 ## Current Features
 
-- Pepdl Classic mode
+- Pepdle Classic mode
 - Practice Mode with adjustable difficulty
 - Multiple cleavage enzymes
 - Ordered and composition-only fragment clues
