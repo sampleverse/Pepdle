@@ -82,6 +82,8 @@ Pepdle was created primarily as an academic learning tool, but it is also intend
 
 ## License
 
-This project is licensed under the MIT License.
+Copyright © 2026 John Rec. All rights reserved.
 
-See the `LICENSE` file for details.
+Pepdle is publicly available for viewing and educational use, but permission is not granted to copy, modify, redistribute, republish, sublicense, sell, or create derivative works from the source code without prior written permission.
+
+See the `LICENSE` file for the full terms.
