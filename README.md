@@ -11,6 +11,36 @@ The goal of Pepdle is to make peptide sequencing practice more interactive and a
 
 Players reconstruct an unknown peptide sequence using information from different cleavage methods and fragment patterns, with optional hints available in Practice Mode.
 
+
+## Latest Update
+
+### Classic Mode overhaul
+- Classic now begins with the residue composition as baseline evidence.
+- Sequencing evidence unlocks progressively after failed guesses.
+- Newly revealed enzyme, terminus, and cut-site evidence uses subtle reveal animations.
+- Fragment evidence in Classic updates only after submitted guesses, preventing free live probing.
+- Earned N-terminus, C-terminus, and cleavage-site annotations persist on the working row.
+- Classic now uses the same responsive residue accounting system as Practice.
+- The Classic residue pool is integrated into the main evidence panel for a cleaner layout.
+- Board-to-input spacing and annotated-row spacing were refined for consistency.
+
+### Startup and menu polish
+- Added a one-time Pepdle startup splash.
+- Startup duration varies between roughly 3–5 seconds.
+- Added randomized biochemistry trivia and creator messages.
+- Added a staged progress animation and refined desktop/mobile loading layout.
+- Reworked the landing menu into a cohesive card-based layout.
+- Mode cards now use dark surfaces with blue/teal accent treatment instead of large saturated fills.
+- Added subtle menu and screen transitions.
+
+### Practice/UI refinements
+- Long-sequence clue and residue layouts were widened and compacted for 10–12 residues.
+- 12-residue pools now fit cleanly in a single row where space permits.
+- Hint controls and main action buttons were consolidated and compacted.
+- Vertical spacing across settings, clue cards, residue pools, ghost rows, and input rows was normalized.
+- Added a small creator/WIP note to the landing screen.
+
+
 ## Current Features
 
 - Pepdle Classic mode
