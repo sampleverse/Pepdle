@@ -72,9 +72,6 @@
     overflow-x: hidden;
     padding: 6px 4px 8px;
   }
-  .residue-pool.visible + .board.classic-wordle-board {
-    margin-top: -10px;
-  }
   .board.classic-wordle-board {
     width: 100%;
     align-items: center;
@@ -122,6 +119,37 @@
   .tile.yellow { background: var(--yellow); border-color: var(--yellow); color: #241d05; }
   .tile.gray { background: var(--gray); border-color: var(--gray); color: #cfd3da; }
 
+  .tile.tile-feedback-reveal {
+    transform-origin: center;
+    animation: tileFeedbackReveal 220ms cubic-bezier(.2,.8,.2,1) both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+  @keyframes tileFeedbackReveal {
+    0% { opacity: 0.45; transform: scaleY(0.82) translateY(2px); filter: brightness(1.12); }
+    65% { opacity: 1; transform: scaleY(1.04) translateY(0); filter: brightness(1.04); }
+    100% { opacity: 1; transform: scaleY(1) translateY(0); filter: brightness(1); }
+  }
+
+  .input-row.input-row-shake {
+    animation: inputRowShake 260ms ease-out both;
+  }
+  @keyframes inputRowShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(4px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(2px); }
+  }
+
+  .action-row.main-actions button,
+  .action-row.main-actions .hint-toggle {
+    transition: transform 120ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+  }
+  .action-row.main-actions button:active:not(:disabled),
+  .action-row.main-actions .hint-toggle:active:not(:disabled) {
+    transform: translateY(1px) scale(0.985);
+  }
+
   .input-row {
     display: flex;
     gap: 6px;
@@ -136,9 +164,9 @@
 
   /* Give annotation pills their own breathing room without changing normal play. */
   .input-row.annotated-row {
-    padding-top: 40px;
-    padding-bottom: 34px;
-    margin-bottom: 6px;
+    padding-top: 46px;
+    padding-bottom: 40px;
+    margin-bottom: 8px;
   }
 
   /* Long peptides get slightly tighter gaps, but the residue boxes stay readable. */
@@ -153,15 +181,15 @@
   }
 
   .input-row.long-sequence.annotated-row {
-    padding-top: 34px;
-    padding-bottom: 30px;
-    margin-bottom: 5px;
+    padding-top: 40px;
+    padding-bottom: 35px;
+    margin-bottom: 7px;
   }
 
   .input-row.long-sequence.compact-annotated-row {
-    padding-top: 32px;
-    padding-bottom: 31px;
-    margin-bottom: 5px;
+    padding-top: 38px;
+    padding-bottom: 36px;
+    margin-bottom: 7px;
   }
   select {
     background: var(--tile-bg);
@@ -213,6 +241,15 @@
     position: relative;
     display: flex;
     flex-shrink: 0;
+  }
+  /* Bond-rail experiment removed for a cleaner annotated row. */
+  .input-cell-wrap:not(:last-child)::after {
+    content: none;
+    display: none;
+  }
+
+  [data-enzyme-label-stack="true"]::before {
+    display: none;
   }
 
   .repeat-superscript {
@@ -306,6 +343,37 @@
   .residue-chip.used.repeat-used {
     color: #f8f9fb;
   }
+  .residue-chip.residue-accounted-pop {
+    animation: residueAccountedPop 0.26s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes residueAccountedPop {
+    0% { transform: scale(1); }
+    48% { transform: scale(1.08); filter: brightness(1.16); }
+    100% { transform: scale(1); filter: brightness(1); }
+  }
+  .cut-line-reveal {
+    transform-origin: center center;
+    animation: cutLineReveal 0.30s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes cutLineReveal {
+    from { opacity: 0; transform: translateX(-50%) scaleY(0.12); }
+    to { opacity: 1; transform: translateX(-50%) scaleY(1); }
+  }
+  .cut-label-reveal {
+    animation: cutLabelReveal 0.28s 0.05s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes cutLabelReveal {
+    from { opacity: 0; filter: brightness(1.12); }
+    to { opacity: 1; filter: brightness(1); }
+  }
+  .terminus-label-reveal {
+    animation: terminusLabelReveal 0.28s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes terminusLabelReveal {
+    0% { opacity: 0; filter: brightness(1.14); }
+    55% { opacity: 1; filter: brightness(1.12); }
+    100% { opacity: 0.98; filter: brightness(1); }
+  }
 
   #gameScreen.classic-mode #infoBox {
     margin-bottom: 12px;
@@ -386,7 +454,15 @@
     to { opacity: 1; transform: translateY(0); filter: brightness(1); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .classic-reveal-new { animation: none; }
+    .classic-reveal-new,
+    .tile.tile-feedback-reveal,
+    .input-row.input-row-shake,
+    .residue-chip.residue-accounted-pop,
+    .cut-line-reveal,
+    .cut-label-reveal,
+    .terminus-label-reveal { animation: none; }
+    .action-row.main-actions button:active:not(:disabled),
+    .action-row.main-actions .hint-toggle:active:not(:disabled) { transform: none; }
   }
 
   .info-box.wide-sequence {
@@ -997,7 +1073,8 @@
     justify-self: start;
     padding: 7px 14px;
     font-size: 0.82rem;
-    visibility: hidden;  }
+    visibility: hidden;
+  }
   #backToMenuBtn,
   #startClassicBtn,
   #startPracticeBtn {
@@ -1268,10 +1345,73 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* Motion language: short, information-led mode entry stagger. */
+  #gameScreen .mode-hero,
+  #gameScreen #practiceOnlyControls,
+  #gameScreen #infoBox,
+  #gameScreen:not(.classic-mode) #residuePool,
+  #gameScreen #board,
+  #gameScreen #ghostRow,
+  #gameScreen .message,
+  #gameScreen #inputRow,
+  #gameScreen .action-area,
+  #gameScreen .legend {
+    transition: opacity 260ms cubic-bezier(.2,.8,.2,1), transform 300ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  #gameScreen.mode-content-entering .mode-hero,
+  #gameScreen.mode-content-entering #practiceOnlyControls,
+  #gameScreen.mode-content-entering #infoBox,
+  #gameScreen.mode-content-entering:not(.classic-mode) #residuePool,
+  #gameScreen.mode-content-entering #board,
+  #gameScreen.mode-content-entering #ghostRow,
+  #gameScreen.mode-content-entering .message,
+  #gameScreen.mode-content-entering #inputRow,
+  #gameScreen.mode-content-entering .action-area,
+  #gameScreen.mode-content-entering .legend {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+
+  #gameScreen.mode-content-enter-active .mode-hero,
+  #gameScreen.mode-content-enter-active #practiceOnlyControls,
+  #gameScreen.mode-content-enter-active #infoBox,
+  #gameScreen.mode-content-enter-active:not(.classic-mode) #residuePool,
+  #gameScreen.mode-content-enter-active #board,
+  #gameScreen.mode-content-enter-active #ghostRow,
+  #gameScreen.mode-content-enter-active .message,
+  #gameScreen.mode-content-enter-active #inputRow,
+  #gameScreen.mode-content-enter-active .action-area,
+  #gameScreen.mode-content-enter-active .legend {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #gameScreen.mode-content-enter-active .mode-hero { transition-delay: 0ms; }
+  #gameScreen.mode-content-enter-active #practiceOnlyControls { transition-delay: 35ms; }
+  #gameScreen.mode-content-enter-active #infoBox,
+  #gameScreen.mode-content-enter-active:not(.classic-mode) #residuePool { transition-delay: 70ms; }
+  #gameScreen.mode-content-enter-active #board,
+  #gameScreen.mode-content-enter-active #ghostRow,
+  #gameScreen.mode-content-enter-active .message { transition-delay: 115ms; }
+  #gameScreen.mode-content-enter-active #inputRow,
+  #gameScreen.mode-content-enter-active .action-area,
+  #gameScreen.mode-content-enter-active .legend { transition-delay: 155ms; }
   @media (prefers-reduced-motion: reduce) {
     .screen-transition,
     .loading-screen,
-    .loading-card {
+    .loading-card,
+    #gameScreen .mode-hero,
+    #gameScreen #practiceOnlyControls,
+    #gameScreen #infoBox,
+    #gameScreen #residuePool,
+    #gameScreen #board,
+    #gameScreen #ghostRow,
+    #gameScreen .message,
+    #gameScreen #inputRow,
+    #gameScreen .action-area,
+    #gameScreen .legend {
       transition: none;
       transform: none !important;
     }
@@ -1513,7 +1653,6 @@
 
 <div class="message" id="message"></div>
 
-<div id="fragmentMapPanel" class="info-box" style="display:none; max-width:600px; font-size:0.78rem;"></div>
 
 <div class="input-row" id="inputRow"></div>
 
@@ -1660,8 +1799,26 @@ function showMenuScreen(animate = true) {
 function showGameScreen(afterShow) {
   const menu = document.getElementById("menuScreen");
   const game = document.getElementById("gameScreen");
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   document.getElementById("backToMenuBtn").style.visibility = "visible";
-  transitionBetweenScreens(menu, game, "flex", afterShow);
+
+  const prepareModeEntry = () => {
+    game.classList.remove("mode-content-enter-active", "mode-content-entering");
+    if (!reducedMotion) game.classList.add("mode-content-entering");
+
+    if (typeof afterShow === "function") afterShow();
+
+    if (reducedMotion) return;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        game.classList.add("mode-content-enter-active");
+        game.classList.remove("mode-content-entering");
+        window.setTimeout(() => game.classList.remove("mode-content-enter-active"), 520);
+      });
+    });
+  };
+
+  transitionBetweenScreens(menu, game, "flex", prepareModeEntry);
 }
 
 function showInitialLoadingScreen() {
@@ -1765,7 +1922,7 @@ function startClassicMode() {
   document.getElementById("practiceOnlyControls").style.display = "none";
   document.getElementById("modeBadge").textContent = "Pepdle Classic";
   document.getElementById("modeSubtitle").textContent =
-    "Start with one clue set and unlock more as you make guesses.";
+    "Start with the residue pool and unlock sequencing evidence as you make guesses.";
   showGameScreen(() => newGame());
 }
 
@@ -1881,11 +2038,80 @@ function cleave(peptide, enzymeFn) {
   return fragments;
 }
 
-function pickEnzymesForPeptide(peptide, count) {
-  const names = Object.keys(ENZYMES);
-  const usable = names.filter(n => cleave(peptide, ENZYMES[n]).length > 1);
+function flattenFragments(fragments) {
+  return fragments.reduce((all, frag) => all.concat(frag), []);
+}
+
+function sameSequence(a, b) {
+  return a.length === b.length && a.every((value, index) => value === b[index]);
+}
+
+function fragmentOrderCanHideSequence(fragments, peptide) {
+  if (fragments.length < 2) return false;
+  for (let i = 0; i < fragments.length; i++) {
+    for (let j = i + 1; j < fragments.length; j++) {
+      const candidate = fragments.map(f => f.slice());
+      [candidate[i], candidate[j]] = [candidate[j], candidate[i]];
+      if (!sameSequence(flattenFragments(candidate), peptide)) return true;
+    }
+  }
+  return false;
+}
+
+function shuffleFragmentsAwayFromSequence(fragments, peptide) {
+  const copied = fragments.map(f => f.slice());
+  if (copied.length < 2) return copied;
+
+  // Try ordinary shuffles first, but never accept the canonical whole-peptide order.
+  for (let attempt = 0; attempt < 24; attempt++) {
+    const candidate = shuffle(copied);
+    if (!sameSequence(flattenFragments(candidate), peptide)) return candidate;
+  }
+
+  // Deterministic fallback for unlucky RNG: find any simple swap that breaks
+  // the canonical order. This is especially important for two-fragment clues,
+  // where a blind shuffle would otherwise hand out the answer 50% of the time.
+  for (let i = 0; i < copied.length; i++) {
+    for (let j = i + 1; j < copied.length; j++) {
+      const candidate = copied.map(f => f.slice());
+      [candidate[i], candidate[j]] = [candidate[j], candidate[i]];
+      if (!sameSequence(flattenFragments(candidate), peptide)) return candidate;
+    }
+  }
+
+  // Pathological repeat case: every fragment permutation reconstructs the same
+  // residue string. The round builder normally rejects this as the opening clue.
+  return copied;
+}
+
+function orderedUsableEnzymes(peptide) {
+  return Object.keys(ENZYMES)
+    .map(name => {
+      const canonicalFrags = cleave(peptide, ENZYMES[name]);
+      return {
+        name,
+        canonicalFrags,
+        fragmentCount: canonicalFrags.length,
+        canHideSequence: fragmentOrderCanHideSequence(canonicalFrags, peptide)
+      };
+    })
+    .filter(entry => entry.fragmentCount > 1);
+}
+
+function chooseEnzymesWithSafeOpener(peptide, count) {
+  const usable = orderedUsableEnzymes(peptide);
   if (usable.length < count) return null;
-  return shuffle(usable).slice(0, count);
+
+  // Prefer a first digestion with 3+ fragments when one exists. It creates a
+  // stronger reconstruction clue and makes "copy the first row" even less useful.
+  const strongOpeners = usable.filter(entry => entry.fragmentCount >= 3 && entry.canHideSequence);
+  const safeOpeners = usable.filter(entry => entry.canHideSequence);
+  const openerPool = strongOpeners.length ? strongOpeners : safeOpeners;
+  if (!openerPool.length) return null;
+
+  const opener = shuffle(openerPool)[0];
+  const remaining = shuffle(usable.filter(entry => entry.name !== opener.name));
+  return [opener, ...remaining].slice(0, count);
 }
 
 function buildPeptideAndClues(config) {
@@ -1893,27 +2119,45 @@ function buildPeptideAndClues(config) {
   let attempts = 0;
   do {
     peptide = generatePeptide(config.len, config.allowRepeats);
-    chosen = pickEnzymesForPeptide(peptide, config.numEnzymes);
+    chosen = chooseEnzymesWithSafeOpener(peptide, config.numEnzymes);
     attempts++;
-  } while (!chosen && attempts < 200);
+  } while (!chosen && attempts < 300);
+
   if (!chosen) {
-    // fallback: just use whatever enzymes exist, even if under-cutting
-    chosen = shuffle(Object.keys(ENZYMES)).slice(0, config.numEnzymes);
+    // Extremely defensive fallback. Normal generation should find a safe opener,
+    // but retain a playable round if a custom configuration becomes pathological.
+    const usable = orderedUsableEnzymes(peptide);
+    chosen = shuffle(usable).slice(0, config.numEnzymes);
   }
-  const clues = chosen.map(n => ({ name: n, frags: shuffle(cleave(peptide, ENZYMES[n])) }));
+
+  const clues = chosen.map(entry => ({
+    name: entry.name,
+    frags: shuffleFragmentsAwayFromSequence(entry.canonicalFrags, peptide)
+  }));
   return { peptide, clues };
 }
 
 function buildPepdleRound(len) {
-  let peptide, usable;
+  let peptide, chosen;
   let attempts = 0;
   do {
     peptide = generatePeptide(len, false);
-    const names = Object.keys(ENZYMES);
-    usable = shuffle(names.filter(n => cleave(peptide, ENZYMES[n]).length > 1));
+    chosen = chooseEnzymesWithSafeOpener(peptide, 2);
     attempts++;
-  } while (usable.length < 2 && attempts < 200);
-  const clueQueue = usable.map(n => ({ name: n, frags: shuffle(cleave(peptide, ENZYMES[n])) }));
+  } while (!chosen && attempts < 300);
+
+  if (!chosen) {
+    const usable = orderedUsableEnzymes(peptide);
+    chosen = shuffle(usable).slice(0, 2);
+  }
+
+  // Classic uses composition-only fragment displays, but keeping the underlying
+  // fragment order anti-canonical makes its clue model consistent with Practice
+  // and prevents future ordered presentations from inheriting the old free-win.
+  const clueQueue = chosen.map(entry => ({
+    name: entry.name,
+    frags: shuffleFragmentsAwayFromSequence(entry.canonicalFrags, peptide)
+  }));
   return { peptide, clueQueue };
 }
 
@@ -1996,7 +2240,8 @@ function renderPepdleInfo(animateNewStage = false) {
     const cls = shouldAnimateStage && typeof state.stage?.cutIndex === "number" && index === state.revealedCutResults.length - 1 ? ' classic-reveal-new' : '';
     unlocks.push(`<div class="classic-special-clue${cls}"><b style="color:#c7ced9;">${label}</b> · ${cutResult.names.join(" / ")} cuts between positions ${cutResult.boundary} and ${cutResult.boundary + 1}.</div>`);
   });
-  if (state.revealCTerm) {    const cls = shouldAnimateStage && state.stage?.revealCTerm ? ' classic-reveal-new' : '';
+  if (state.revealCTerm) {
+    const cls = shouldAnimateStage && state.stage?.revealCTerm ? ' classic-reveal-new' : '';
     unlocks.push(`<div class="classic-special-clue${cls}"><b style="color:#d9818f;">C-Terminus</b> · ${secret[secret.length - 1]}</div>`);
   }
 
@@ -2266,6 +2511,7 @@ function updateResiduePool() {
     const alreadyUsed = usedCounts[aa] || 0;
     const shouldUse = alreadyUsed < (typedCounts[aa] || 0);
     const repeatColor = repeatColorMap[aa] || null;
+    const wasUsed = chip.classList.contains("used");
 
     chip.classList.toggle("used", shouldUse);
     chip.classList.toggle("repeat-used", shouldUse && !!repeatColor);
@@ -2276,6 +2522,12 @@ function updateResiduePool() {
     if (shouldUse) {
       usedCounts[aa] = alreadyUsed + 1;
       accounted++;
+      if (!wasUsed) {
+        chip.classList.remove("residue-accounted-pop");
+        void chip.offsetWidth;
+        chip.classList.add("residue-accounted-pop");
+        window.setTimeout(() => chip.classList.remove("residue-accounted-pop"), 300);
+      }
       if (repeatColor) {
         chip.style.background = colorWithAlpha(repeatColor, 0.34);
         chip.style.borderColor = colorWithAlpha(repeatColor, 0.82);
@@ -2521,11 +2773,18 @@ function ensurePracticeHistoryRow(rowIndex) {
 function updateBoardRow(rowIndex, guess, feedback) {
   if (!isPepdleMode) ensurePracticeHistoryRow(rowIndex);
 
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   for (let c = 0; c < LEN; c++) {
     const tile = document.getElementById("tile-" + rowIndex + "-" + c);
     if (!tile) continue;
     tile.textContent = guess[c];
     tile.className = "tile " + feedback[c];
+    tile.style.removeProperty("--reveal-delay");
+    if (!reducedMotion) {
+      tile.style.setProperty("--reveal-delay", Math.min(c * 38, 300) + "ms");
+      void tile.offsetWidth;
+      tile.classList.add("tile-feedback-reveal");
+    }
   }
 }
 
@@ -2591,11 +2850,6 @@ function closeHintMenu() {
   if (shell) shell.classList.remove("open");
 }
 
-function openHintMenu() {
-  const shell = document.getElementById("hintShell");
-  if (shell) shell.classList.add("open");
-}
-
 function toggleHintMenu() {
   const shell = document.getElementById("hintShell");
   if (!shell || shell.style.display === "none") return;
@@ -2612,9 +2866,6 @@ function newGame() {
   gameOver = false;
   lastClassicSubmittedGuess = null;
   revealedCutHintBoundaries = [];
-
-  document.getElementById("fragmentMapPanel").style.display = "none";
-  document.getElementById("fragmentMapPanel").innerHTML = "";
 
   if (isPepdleMode) {
     LEN = 8;
@@ -2713,38 +2964,6 @@ function computeCutBoundaries(enzymeNames) {
   return boundaries;
 }
 
-function renderCutMap(enzymeNames) {
-  const panel = document.getElementById("fragmentMapPanel");
-  if (!enzymeNames.length) { panel.style.display = "none"; return; }
-
-  const boundaries = computeCutBoundaries(enzymeNames);
-  const tileSize = Math.min(48, tileSizeFor(secret.length));
-
-  let html = `<div style="margin-bottom:10px;"><b style="color:var(--accent);">Answer & cut sites</b> (where each revealed enzyme actually cuts this sequence):</div>`;
-  html += `<div style="display:flex; align-items:flex-start; overflow-x:auto; padding:4px 2px 8px;">`;
-
-  secret.forEach((aa, i) => {
-    html += `<div style="width:${tileSize}px; height:${tileSize}px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#343b48; border-radius:6px; font-weight:700; font-size:0.75rem;">${aa}</div>`;
-
-    if (i < secret.length - 1) {
-      const boundaryIndex = i + 1;
-      const cutHere = boundaries[boundaryIndex];
-      if (cutHere && cutHere.length) {
-        html += `
-          <div style="display:flex; flex-direction:column; align-items:center; margin:0 4px; min-width:52px; flex-shrink:0;">
-            <div style="width:2px; height:${tileSize}px; background:var(--accent);"></div>
-            <div style="font-size:0.65rem; color:var(--accent); text-align:center; margin-top:4px; line-height:1.25;">${cutHere.join(", ")}</div>
-          </div>`;
-      } else {
-        html += `<div style="width:8px; flex-shrink:0;"></div>`;
-      }
-    }
-  });
-
-  html += `</div>`;
-  panel.innerHTML = html;
-  panel.style.display = "block";
-}
 
 function fitRowWithoutScroll(containerId) {
   const container = document.getElementById(containerId);
@@ -2792,6 +3011,10 @@ function annotateCutLines(containerId, enzymeNames, includeLabels, allowedBounda
   if (includeLabels) container.classList.add("annotated-row");
   if (LEN >= 10) container.classList.add("long-sequence");
   const boundaries = computeCutBoundaries(enzymeNames);
+  const previousBoundaries = new Set(
+    Array.from(container.querySelectorAll('[data-divider="true"][data-boundary-index]'))
+      .map(el => el.dataset.boundaryIndex)
+  );
 
   const childEls = Array.from(container.children).filter(el => {
     if (!el || el.dataset?.divider === "true") return false;
@@ -2813,6 +3036,8 @@ function annotateCutLines(containerId, enzymeNames, includeLabels, allowedBounda
         const elHeight = el.offsetHeight || 48;
         const wrapper = document.createElement("div");
         wrapper.dataset.divider = "true";
+        wrapper.dataset.boundaryIndex = String(boundaryIndex);
+        const isNewBoundary = !previousBoundaries.has(String(boundaryIndex));
         wrapper.style.position = "relative";
         wrapper.style.width = "2px";
         wrapper.style.height = elHeight + "px";
@@ -2821,16 +3046,21 @@ function annotateCutLines(containerId, enzymeNames, includeLabels, allowedBounda
         wrapper.style.overflow = "visible";
 
         const primaryColor = ENZYME_COLORS[cutHere[0]] || "var(--accent)";
+        const compactBoundary = LEN >= 10;
+        const lineExtra = compactBoundary ? 10 : 12;
+        const lineHeight = elHeight + lineExtra;
+        const lineOffset = Math.round(lineExtra / 2);
         const line = document.createElement("div");
         line.style.position = "absolute";
         line.style.left = "50%";
-        line.style.top = LEN >= 10 ? "4%" : "2%";
-        line.style.width = "2px";
-        line.style.height = LEN >= 10 ? "92%" : "96%";
+        line.style.top = `-${lineOffset}px`;
+        line.style.width = compactBoundary ? "3px" : "3px";
+        line.style.height = `${lineHeight}px`;
         line.style.borderRadius = "999px";
         line.style.background = primaryColor;
-        line.style.boxShadow = `0 0 0 1px ${colorWithAlpha(primaryColor, 0.10)}, 0 0 10px ${colorWithAlpha(primaryColor, 0.24)}`;
+        line.style.boxShadow = `0 0 0 1px ${colorWithAlpha(primaryColor, 0.10)}, 0 0 10px ${colorWithAlpha(primaryColor, 0.20)}`;
         line.style.transform = "translateX(-50%)";
+        if (isNewBoundary) line.classList.add("cut-line-reveal");
         wrapper.appendChild(line);
 
         if (includeLabels) {
@@ -2841,37 +3071,36 @@ function annotateCutLines(containerId, enzymeNames, includeLabels, allowedBounda
           label.style.display = "flex";
           label.style.flexDirection = "column";
           label.style.alignItems = "center";
-          label.style.gap = LEN >= 10 ? "1px" : "2px";
+          label.style.gap = compactBoundary ? "2px" : "3px";
           label.style.whiteSpace = "nowrap";
           label.style.pointerEvents = "none";
-          label.style.zIndex = "1";
-          label.dataset.enzymeLabelStack = "true";
+          label.style.zIndex = "2";
+          if (isNewBoundary) label.classList.add("cut-label-reveal");
 
           cutHere.forEach(name => {
             const color = ENZYME_COLORS[name] || "var(--accent)";
             const chip = document.createElement("div");
             chip.dataset.enzymeChip = "true";
             chip.textContent = name;
-            const compactChip = LEN >= 10;
-            chip.style.fontSize = compactChip ? "0.52rem" : "0.60rem";
-            chip.style.fontWeight = "650";
+            chip.style.fontSize = compactBoundary ? "0.54rem" : "0.62rem";
+            chip.style.fontWeight = "675";
             chip.style.letterSpacing = "0.12px";
             chip.style.lineHeight = "1.2";
-            chip.style.padding = compactChip ? "2px 6px" : "3px 8px";
+            chip.style.padding = compactBoundary ? "2px 7px" : "4px 10px";
             chip.style.borderRadius = "999px";
             chip.style.color = color;
-            chip.style.border = `1px solid ${colorWithAlpha(color, 0.36)}`;
-            chip.style.background = colorWithAlpha(color, 0.14);
-            chip.style.boxShadow = `0 1px 4px ${colorWithAlpha(color, 0.10)}`;
+            chip.style.border = `1px solid ${colorWithAlpha(color, 0.38)}`;
+            chip.style.background = colorWithAlpha(color, 0.15);
+            chip.style.boxShadow = `0 1px 5px ${colorWithAlpha(color, 0.12)}`;
             label.appendChild(chip);
           });
 
           if (toggle) {
-            label.style.bottom = "100%";
-            label.style.marginBottom = LEN >= 10 ? "6px" : "8px";
+            label.dataset.labelPosition = "top";
+            label.style.bottom = `${lineHeight + (compactBoundary ? 3 : 5)}px`;
           } else {
-            label.style.top = "100%";
-            label.style.marginTop = LEN >= 10 ? "6px" : "8px";
+            label.dataset.labelPosition = "bottom";
+            label.style.top = `${lineHeight + (compactBoundary ? 3 : 5)}px`;
           }
           wrapper.appendChild(label);
           toggle = !toggle;
@@ -2913,6 +3142,7 @@ function setTerminusSideLabel(input, text, side, color) {
 
   const attrName = `data-terminus-${side}`;
   const old = wrap.querySelector(`[${attrName}="true"]`);
+  const isNewTerminus = !old;
   if (old) old.remove();
 
   const label = document.createElement("div");
@@ -2935,6 +3165,7 @@ function setTerminusSideLabel(input, text, side, color) {
   label.style.background = colorWithAlpha(color, 0.14);
   label.style.boxShadow = `0 1px 4px ${colorWithAlpha(color, 0.10)}`;
   label.style.opacity = "0.98";
+  if (isNewTerminus) label.classList.add("terminus-label-reveal");
 
   if (side === "left") {
     label.style.right = "100%";
@@ -2995,7 +3226,8 @@ function highlightNTermHint() {
 }
 
 function highlightFinalTermini() {
-  const first = document.getElementById("sel0");  const last = document.getElementById("sel" + (LEN - 1));
+  const first = document.getElementById("sel0");
+  const last = document.getElementById("sel" + (LEN - 1));
 
   if (first) {
     first.classList.remove("n-term-hint");
@@ -3046,6 +3278,17 @@ function revealCutSiteHint() {
 }
 
 
+function animateInvalidInputRow() {
+  const row = document.getElementById("inputRow");
+  if (!row) return;
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  if (reducedMotion) return;
+  row.classList.remove("input-row-shake");
+  void row.offsetWidth;
+  row.classList.add("input-row-shake");
+  window.setTimeout(() => row.classList.remove("input-row-shake"), 320);
+}
+
 function submitGuess() {
   if (gameOver) return;
   const guess = [];
@@ -3064,6 +3307,7 @@ function submitGuess() {
   }
 
   if (hasError) {
+    animateInvalidInputRow();
     setMessage("Check the highlighted box(es). Use a 3-letter code (e.g. Gly) or 1-letter code (e.g. G).");
     return;
   }
@@ -3103,7 +3347,31 @@ function submitGuess() {
     gameOver = true;
     hideGhostRow();
     document.getElementById("guessBtn").disabled = true;
-    if (!isPepdleMode) renderCutMap(lastRoundClues.map(c => c.name));
+
+    if (!isPepdleMode) {
+      // Modern Practice loss state: reveal the solved sequence directly in the
+      // working row and reuse the current annotation system instead of the old
+      // standalone "Answer & cut sites" table.
+      for (let i = 0; i < LEN; i++) {
+        const box = document.getElementById("sel" + i);
+        if (!box) continue;
+        box.value = secret[i];
+        box.classList.remove("invalid");
+      }
+
+      updateDuplicateHighlights();
+      updateResiduePool();
+
+      const names = lastRoundClues.map(c => c.name);
+      annotateCutLines("inputRow", names, true);
+      const inputRowEl = document.getElementById("inputRow");
+      if (inputRowEl && LEN >= 10) inputRowEl.classList.add("compact-annotated-row");
+      highlightFinalTermini();
+
+      document.getElementById("revealAnswerBtn").disabled = true;
+      document.getElementById("hintBtn").disabled = true;
+      document.getElementById("cutHintBtn").disabled = true;
+    }
   } else {
     const note = !isPepdleMode ? generateFeedbackNote(guess, secret, lastRoundClues.map(c => c.name)) : "";
     const classicUnlockNote = isPepdleMode && classicUnlockedStage
