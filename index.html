@@ -109,9 +109,9 @@
 
   /* Give annotation pills their own breathing room without changing normal play. */
   .input-row.annotated-row {
-    padding-top: 34px;
-    padding-bottom: 26px;
-    margin-bottom: 2px;
+    padding-top: 40px;
+    padding-bottom: 32px;
+    margin-bottom: 0;
   }
 
   /* Long peptides get slightly tighter gaps, but the residue boxes stay readable. */
@@ -126,13 +126,13 @@
   }
 
   .input-row.long-sequence.annotated-row {
-    padding-top: 30px;
-    padding-bottom: 24px;
+    padding-top: 34px;
+    padding-bottom: 28px;
   }
 
   .input-row.long-sequence.compact-annotated-row {
-    padding-top: 28px;
-    padding-bottom: 26px;
+    padding-top: 32px;
+    padding-bottom: 29px;
   }
   select {
     background: var(--tile-bg);
@@ -268,28 +268,41 @@
     transition: opacity 0.16s ease, background 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
   }
   .residue-chip.used {
-    opacity: 0.42; background: #292f3a; border-color: #39414d;
-    text-decoration: line-through; text-decoration-thickness: 1px;
+    opacity: 1;
+    background: #4f6475;
+    border-color: #71889a;
+    color: #f2f6fa;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+  }
+  .residue-chip.used.repeat-used {
+    color: #f8f9fb;
+  }
+
+  .info-box.wide-sequence {
+    max-width: 560px;
+  }
+  .residue-pool.wide-sequence {
+    max-width: 560px;
   }
 
   .info-box.compact-sequence {
     padding: 10px 14px;
     margin-bottom: 14px;
-    font-size: 0.81rem;
-    line-height: 1.42;
+    font-size: 0.85rem;
+    line-height: 1.5;
   }
   .info-box.compact-sequence .fragments {
     gap: 6px;
     margin-top: 6px;
   }
   .info-box.compact-sequence .frag {
-    padding: 3px 8px;
-    font-size: 0.78rem;
+    padding: 3px 9px;
+    font-size: 0.85rem;
     border-radius: 6px;
   }
 
   .residue-pool.compact-sequence {
-    margin: -4px auto 12px;
+    margin: -4px auto 14px;
     padding: 8px 10px 9px;
   }
   .residue-pool.compact-sequence .residue-pool-header {
@@ -308,8 +321,20 @@
   .residue-pool.compact-sequence .residue-chip {
     min-width: 36px;
     padding: 3px 7px;
-    font-size: 0.74rem;
+    font-size: 0.76rem;
     border-radius: 6px;
+  }
+
+  .residue-pool.twelve-residue-pool .residue-pool-chips {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .residue-pool.twelve-residue-pool .residue-chip {
+    min-width: 0;
+    width: 100%;
+    padding: 3px 4px;
+    font-size: 0.76rem;
   }
 
   .board.compact-sequence {
@@ -354,7 +379,21 @@
     margin: 6px 0 4px;
     text-align: center;
   }
-  .message.win { color: var(--green); font-weight: 700; }
+  .message.win {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    min-height: 0;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: rgba(76, 175, 109, 0.10);
+    border: 1px solid rgba(76, 175, 109, 0.30);
+    color: #79d69a;
+    font-size: 0.82rem;
+    font-weight: 750;
+    line-height: 1.15;
+  }
   .message.lose { color: #e57373; font-weight: 700; }
   .legend {
     display: flex;
@@ -377,12 +416,72 @@
   .legend .y::before { background: var(--yellow); }
   .legend .n::before { background: var(--gray); }
 
+  .practice-progressive-board {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    padding: 0 4px;
+    overflow: visible;
+  }
+  .practice-progressive-board:empty {
+    margin-bottom: 2px;
+  }
+  .practice-progressive-board .row {
+    animation: practiceRowIn 0.18s ease-out;
+  }
+  @keyframes practiceRowIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ghost-row {
+    display: none;
+    gap: 6px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 0 8px;
+    margin-top: -4px;
+    margin-bottom: 4px;
+    pointer-events: none;
+    user-select: none;
+  }
+  .ghost-row.visible {
+    display: flex;
+  }
+  .ghost-row.long-sequence {
+    gap: 5px;
+  }
+  .ghost-cell {
+    width: var(--tile-size, 54px);
+    height: var(--tile-size, 54px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(111, 168, 255, 0.16);
+    border-radius: 8px;
+    background: rgba(42, 47, 58, 0.24);
+    color: rgba(238, 241, 245, 0.28);
+    font-size: 0.84rem;
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+  .ghost-row.long-sequence .ghost-cell {
+    width: 48px;
+    height: 48px;
+    font-size: 0.76rem;
+  }
+
   .action-area {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     margin-top: 2px;
   }
   .action-row {
@@ -393,17 +492,77 @@
     gap: 12px;
     flex-wrap: wrap;
   }
+  .action-row.main-actions button,
+  .action-row.main-actions .hint-toggle {
+    height: 44px;
+    padding: 0 16px;
+  }
   .action-row.main-actions .secondary {
-    min-width: 160px;
+    min-width: 0;
   }
   .action-row.main-actions #guessBtn {
-    min-width: 170px;
+    min-width: 0;
+    padding: 0 18px;
   }
-  .action-row.hint-actions .secondary {
-    min-width: 210px;
+  .hint-shell {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hint-toggle {
+    min-width: 88px;
+    height: 44px;
+    padding: 0 12px;
+    font-size: 0.86rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 12px;
+    line-height: 1;
+  }
+  .hint-toggle .hint-icon {
+    transform: translateY(-0.5px);
+  }
+  .hint-toggle .chevron {
+    font-size: 0.68rem;
+    opacity: 0.8;
+    transition: transform 0.16s ease;
+  }
+  .hint-shell.open .hint-toggle .chevron {
+    transform: rotate(180deg);
+  }
+  .hint-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 20;
+    width: max-content;
+    min-width: 192px;
+    padding: 8px;
+    border: 1px solid var(--tile-border);
+    border-radius: 14px;
+    background: rgba(33, 38, 49, 0.98);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.26);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .hint-shell.open .hint-menu {
+    display: flex;
+  }
+  .hint-menu .secondary {
+    min-width: 176px;
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 0.82rem;
+    border-radius: 10px;
+    justify-content: flex-start;
   }
   #revealAnswerBtn.subdued-action {
-    opacity: 0.78;
+    opacity: 0.8;
     border-color: #404959;
     color: #b7bfcb;
   }
@@ -411,12 +570,20 @@
     opacity: 0.42;
   }
   .legend {
-    margin-top: 4px;
+    margin-top: 6px;
     gap: 12px;
+    font-size: 0.9rem;
+    opacity: 0.88;
   }
   @media (max-width: 700px) {
-    .action-row.hint-actions .secondary {
-      min-width: 180px;
+    .hint-menu {
+      right: 50%;
+      transform: translateX(50%);
+      min-width: 184px;
+    }
+    .hint-menu .secondary {
+      min-width: 144px;
+      font-size: 0.8rem;
     }
   }
 
@@ -426,15 +593,14 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
-  .difficulty-bar,
-  .utility-row {
+  .practice-toolbar {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
     flex-wrap: wrap;
   }
   .difficulty-picker {
@@ -448,9 +614,9 @@
     font-size: 0.8rem;
     color: #9aa3b2;
   }
-  .utility-row .secondary {
-    padding: 6px 12px;
-    font-size: 0.8rem;
+  .practice-toolbar .secondary {
+    padding: 7px 13px;
+    font-size: 0.82rem;
   }
   #presetSelect {
     min-width: 130px;
@@ -458,42 +624,242 @@
   .custom-panel {
     display: none;
     width: 100%;
-    max-width: 560px;
-    margin: 0 auto 14px;
-    padding: 12px 14px 14px;
+    max-width: 492px;
+    margin: 0 auto;
+    padding: 10px 12px 12px;
     background: rgba(42, 47, 58, 0.72);
     border: 1px solid var(--tile-border);
     border-radius: 10px;
   }
   .custom-panel-title {
-    font-size: 0.76rem;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.2px;
     color: #cbd2dc;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
   .custom-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px 14px;
+    gap: 12px 12px;
   }
   .custom-field {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
     min-width: 0;
   }
-  .custom-field label {
+  .custom-field-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .custom-field label,
+  .field-title {
     font-size: 0.76rem;
     color: #9aa3b2;
   }
-  .custom-field select {
+  .value-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: rgba(72, 82, 100, 0.55);
+    border: 1px solid rgba(112, 124, 148, 0.45);
+    color: #e9edf3;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+  .custom-field input[type="range"] {
     width: 100%;
-    min-width: 0;
+    margin: 0;
+    height: 18px;
+    background: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .custom-field input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 999px;
+    background: #596476;
+    border: 1px solid rgba(111, 168, 255, 0.22);
+  }
+  .custom-field input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    margin-top: -6px;
+    border-radius: 50%;
+    background: #eef1f5;
+    border: 1px solid #7e8999;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.28);
+    cursor: pointer;
+  }
+  .custom-field input[type="range"]::-moz-range-track {
+    height: 4px;
+    border-radius: 999px;
+    background: #596476;
+    border: 1px solid rgba(111, 168, 255, 0.22);
+  }
+  .custom-field input[type="range"]::-moz-range-progress {
+    height: 4px;
+    border-radius: 999px;
+    background: #6fa8ff;
+  }
+  .custom-field input[type="range"]::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #eef1f5;
+    border: 1px solid #7e8999;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.28);
+    cursor: pointer;
+  }
+  .slider-scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.67rem;
+    color: #7f8998;
+    padding: 0 2px;
+  }
+  .segmented-control {
+    display: inline-flex;
+    width: 100%;
+    padding: 3px;
+    gap: 3px;
+    border-radius: 12px;
+    background: rgba(31, 37, 47, 0.78);
+    border: 1px solid rgba(82, 90, 108, 0.9);
+  }
+  .seg-btn {
+    flex: 1 1 0;
+    background: transparent;
+    border: none;
+    color: #b7bfcb;
+    padding: 5px 8px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+  }
+  .seg-btn.active {
+    background: rgba(89, 111, 153, 0.34);
+    color: #f3f6fb;
+    box-shadow: inset 0 0 0 1px rgba(121, 151, 211, 0.5);
+  }
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 3px;
+  }
+  .toggle-switch {
+    position: relative;
+    width: 42px;
+    height: 24px;
+    flex: 0 0 auto;
+  }
+  .toggle-switch input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .toggle-track {
+    position: absolute;
+    inset: 0;
+    background: rgba(58, 66, 83, 0.95);
+    border: 1px solid rgba(86, 95, 115, 0.95);
+    border-radius: 999px;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  .toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #f1f4f8;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+    transition: transform 0.18s ease;
+  }
+  .toggle-switch input:checked + .toggle-track {
+    background: rgba(87, 125, 210, 0.5);
+    border-color: rgba(122, 165, 255, 0.75);
+  }
+  .toggle-switch input:checked + .toggle-track .toggle-thumb {
+    transform: translateX(18px);
+  }
+  .toggle-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #e7ebf2;
+  }
+  .info-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .info-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  .info-btn {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid rgba(99, 113, 138, 0.9);
+    background: rgba(53, 61, 76, 0.85);
+    color: #c7cfdb;
+    font-size: 0.68rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+  .info-tip {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 8;
+    width: 220px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: rgba(26, 31, 40, 0.98);
+    border: 1px solid rgba(78, 88, 105, 0.95);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.24);
+    color: #d8dee8;
+    font-size: 0.72rem;
+    line-height: 1.45;
+    display: none;
+  }
+  .info-wrap:hover .info-tip,
+  .info-wrap:focus-within .info-tip,
+  .info-wrap.open .info-tip {
+    display: block;
+  }
+  .custom-hidden-input {
+    display: none;
   }
   @media (max-width: 620px) {
+    .custom-panel {
+      max-width: 100%;
+    }
     .custom-grid {
       grid-template-columns: 1fr;
+    }
+    .info-tip {
+      width: min(220px, calc(100vw - 90px));
     }
   }
 
@@ -554,6 +920,14 @@
     margin: 0;
     text-align: center;
   }
+  .menu-note {
+    max-width: 360px;
+    margin-top: 2px;
+    text-align: center;
+    color: #98a2b3;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
   @media (max-width: 640px) {
     .site-header {
       grid-template-columns: 96px 1fr 96px;
@@ -581,6 +955,7 @@
   <button type="button" id="startPracticeBtn" class="secondary" onclick="startPracticeMode()" style="width:280px; padding:16px; font-size:1rem;">
     🔬 Practice Mode
   </button>
+  <div class="menu-note">A rudimentary silly thingy, still being worked on by yours truly, John Rec.</div>
 </div>
 
 <div id="gameScreen" style="display:none; width:100%; max-width:760px; flex-direction:column; align-items:center;">
@@ -593,67 +968,80 @@
 <div id="practiceOnlyControls" style="display:none; flex-direction:column; align-items:center; width:100%;">
 
 <div class="practice-setup">
-  <div class="difficulty-bar">
+  <div class="practice-toolbar">
     <div class="difficulty-picker">
       <label for="presetSelect" class="practice-label">Difficulty:</label>
       <select id="presetSelect">
         <option value="easy">Easy</option>
-        <option value="medium" selected>Medium</option>
+        <option value="normal" selected>Normal</option>
         <option value="hard">Hard</option>
         <option value="expert">Expert</option>
         <option value="custom">Custom</option>
       </select>
     </div>
+    <button class="secondary" id="referenceGuideBtn">📘 Reference &amp; Guide</button>
   </div>
 
   <div id="customKnobs" class="custom-panel">
     <div class="custom-panel-title">Custom settings</div>
     <div class="custom-grid">
       <div class="custom-field">
-        <label for="lenSelect">Sequence length</label>
-        <select id="lenSelect">
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8" selected>8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-        </select>
+        <div class="custom-field-header">
+          <label for="lenSelect">Sequence length</label>
+          <span class="value-chip" id="lenValue">6</span>
+        </div>
+        <input id="lenSelect" type="range" min="6" max="12" step="1" value="8">
+        <div class="slider-scale"><span>6</span><span>12</span></div>
       </div>
       <div class="custom-field">
-        <label for="enzymeSelect">Enzymes</label>
-        <select id="enzymeSelect">
-          <option value="1">1</option>
-          <option value="2" selected>2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-        </select>
+        <div class="custom-field-header">
+          <label for="enzymeSelect">Enzymes</label>
+          <span class="value-chip" id="enzymeValue">2</span>
+        </div>        <input id="enzymeSelect" type="range" min="1" max="4" step="1" value="2">
+        <div class="slider-scale"><span>1</span><span>4</span></div>
       </div>
       <div class="custom-field">
-        <label for="modeSelect">Fragment mode</label>
-        <select id="modeSelect">
-          <option value="ordered" selected>Ordered (internal order given)</option>
-          <option value="composition">Composition only (shuffled)</option>
-        </select>
+        <div class="custom-field-header">
+          <div class="info-label">
+            <span class="field-title">Fragment mode</span>
+            <span class="info-wrap" data-info-wrap>
+              <button type="button" class="info-btn" aria-label="About fragment mode">?</button>
+              <span class="info-tip"><b>Ordered</b>: each fragment shows the residues in their internal order. <br><b>Composition</b>: each fragment only shows which residues are present, shuffled.</span>
+            </span>
+          </div>
+        </div>
+        <div class="segmented-control" id="modeSegmented">
+          <button type="button" class="seg-btn active" data-mode-option="ordered">Ordered</button>
+          <button type="button" class="seg-btn" data-mode-option="composition">Composition</button>
+        </div>
+        <input id="modeSelect" class="custom-hidden-input" type="hidden" value="ordered">
       </div>
       <div class="custom-field">
-        <label for="repeatSelect">Repeats</label>
-        <select id="repeatSelect">
-          <option value="off" selected>Off (all distinct)</option>
-          <option value="on">On (residues may repeat)</option>
-        </select>
+        <div class="custom-field-header">
+          <div class="info-label">
+            <span class="field-title">Repeats</span>
+            <span class="info-wrap" data-info-wrap>
+              <button type="button" class="info-btn" aria-label="About repeats">?</button>
+              <span class="info-tip"><b>Repeats on</b>: the same amino acid may appear multiple times in the sequence. <br><b>Repeats off</b>: all residues in the sequence are unique.</span>
+            </span>
+          </div>
+        </div>
+        <div class="toggle-row">
+          <label class="toggle-switch" for="repeatToggle">
+            <input id="repeatToggle" type="checkbox">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
+          <span class="toggle-text" id="repeatStatus">Off</span>
+        </div>
+        <input id="repeatSelect" class="custom-hidden-input" type="hidden" value="off">
       </div>
     </div>
   </div>
 
-  <div class="utility-row">
-    <button class="secondary" id="refTableBtn">📋 Reference Table</button>
-    <button class="secondary" id="howToBtn">📖 How to Solve This</button>
-  </div>
 </div>
 
-<div class="info-box" id="refTable" style="display:none; max-width:560px; font-size:0.8rem;">
+<div class="info-box" id="referenceGuidePanel" style="display:none; max-width:560px; font-size:0.8rem;">
+  <div style="font-weight:700; color:var(--accent); margin-bottom:8px;">Cleavage reference</div>
   <table style="width:100%; border-collapse:collapse;">
     <tr style="border-bottom:1px solid var(--tile-border);">
       <th style="text-align:left; padding:4px 8px 8px 0; color:var(--accent);">Reagent</th>
@@ -669,15 +1057,14 @@
     <tr><td style="padding:4px 8px 4px 0;">Sanger's reagent</td><td style="padding:4px 0;">identifies N-terminal residue (single round)</td></tr>
   </table>
   <div style="margin-top:8px; font-size:0.75rem; color:#9aa3b2;">*No cleavage occurs if Pro sits on either side of the bond (not modeled in this prototype yet).</div>
-</div>
 
-<div class="info-box" id="howToPanel" style="display:none; max-width:560px; font-size:0.82rem; line-height:1.55;">
-  <b style="color:var(--accent);">The general method:</b>
-  <ol style="margin:8px 0 0; padding-left:18px;">
-    <li><b>If fragments are composition-only</b> (not ordered), first work out each fragment's internal order using cut-site rules. Example: a Trypsin fragment must end in Arg or Lys, since that's the residue Trypsin cuts after, unless it's the very last fragment in the chain.</li>
-    <li><b>Scan for overlaps</b> between different enzymes' fragments. A fragment boundary from one enzyme often falls in the middle of another enzyme's fragment. That overlap is real evidence those residues are adjacent.</li>
-    <li><b>Chain fragments together</b> using those overlaps, extending outward from a fixed anchor (the N-terminus if revealed, or the fragment you're most sure of).</li>
-    <li><b>Verify</b>: every fragment from every revealed enzyme must appear as an unbroken stretch in your final sequence, with nothing missing or duplicated.</li>
+  <div style="height:1px; background:var(--tile-border); margin:14px 0 12px;"></div>
+  <div style="font-weight:700; color:var(--accent); margin-bottom:6px;">How to solve</div>
+  <ol style="margin:0; padding-left:18px; line-height:1.55; font-size:0.82rem;">
+    <li><b>If fragments are composition-only</b>, first work out each fragment's internal order using the cut-site rules.</li>
+    <li><b>Scan for overlaps</b> between fragments from different enzymes. Those overlaps are evidence that residues are adjacent.</li>
+    <li><b>Chain fragments together</b> from the most reliable anchor, such as a revealed N-terminus or a fragment whose placement is clear.</li>
+    <li><b>Verify the full sequence</b>: every revealed fragment should appear as one unbroken stretch, with nothing missing or duplicated.</li>
   </ol>
 </div>
 
@@ -694,6 +1081,7 @@
 </div>
 
 <div class="board" id="board"></div>
+<div class="ghost-row" id="ghostRow" aria-hidden="true"></div>
 
 <div class="message" id="message"></div>
 
@@ -705,12 +1093,14 @@
   <div class="action-row main-actions">
     <button id="guessBtn">Submit Guess</button>
     <button class="secondary" id="newGameBtn">New Sequence</button>
-  </div>
-
-  <div class="action-row hint-actions">
-    <button class="secondary" id="hintBtn">💡 Reveal N-Terminus</button>
-    <button class="secondary" id="cutHintBtn">✂ Reveal Cut Site</button>
-    <button class="secondary subdued-action" id="revealAnswerBtn">👁 Reveal Answer</button>
+    <div class="hint-shell" id="hintShell">
+      <button class="secondary hint-toggle" id="hintToggleBtn" type="button" aria-label="Hints" title="Hints"><span class="hint-icon">💡</span><span>Hints</span><span class="chevron">▾</span></button>
+      <div class="hint-menu" id="hintMenu">
+        <button class="secondary" id="hintBtn" type="button">Reveal N-Terminus</button>
+        <button class="secondary" id="cutHintBtn" type="button">Reveal Cut Site</button>
+        <button class="secondary subdued-action" id="revealAnswerBtn" type="button">Reveal Answer</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -749,11 +1139,39 @@ function normalizeAAInput(raw) {
 
 // --- Difficulty presets ---
 const PRESETS = {
-  easy:   { len: 6,  numEnzymes: 2, ordered: true,  allowRepeats: false },
-  medium: { len: 8,  numEnzymes: 2, ordered: true,  allowRepeats: false },
-  hard:   { len: 9,  numEnzymes: 1, ordered: true,  allowRepeats: false },
-  expert: { len: 11, numEnzymes: 1, ordered: false, allowRepeats: true  }
+  easy:   { len: 6,  numEnzymes: 2, ordered: true,  allowRepeats: false, autoRevealNTerm: true  },
+  normal: { len: 8,  numEnzymes: 2, ordered: true,  allowRepeats: true,  autoRevealNTerm: false },
+  hard:   { len: 10, numEnzymes: 2, ordered: false, allowRepeats: true,  autoRevealNTerm: false },
+  expert: { len: 12, numEnzymes: 3, ordered: false, allowRepeats: true,  autoRevealNTerm: false }
 };
+
+function syncCustomControlUI() {
+  const lenInput = document.getElementById("lenSelect");
+  const enzymeInput = document.getElementById("enzymeSelect");
+  const modeInput = document.getElementById("modeSelect");
+  const repeatInput = document.getElementById("repeatSelect");
+  if (lenInput) document.getElementById("lenValue").textContent = lenInput.value;
+  if (enzymeInput) document.getElementById("enzymeValue").textContent = enzymeInput.value;
+  document.querySelectorAll("[data-mode-option]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.modeOption === modeInput.value);
+  });
+  const repeatsOn = repeatInput.value === "on";
+  const repeatToggle = document.getElementById("repeatToggle");
+  if (repeatToggle) repeatToggle.checked = repeatsOn;
+  document.getElementById("repeatStatus").textContent = repeatsOn ? "On" : "Off";
+}
+
+function setFragmentMode(value, triggerGame = true) {
+  document.getElementById("modeSelect").value = value;
+  syncCustomControlUI();
+  if (triggerGame) newGame();
+}
+
+function setRepeatsValue(value, triggerGame = true) {
+  document.getElementById("repeatSelect").value = value;
+  syncCustomControlUI();
+  if (triggerGame) newGame();
+}
 
 function applyPreset(name) {
   const p = PRESETS[name];
@@ -761,6 +1179,7 @@ function applyPreset(name) {
   document.getElementById("enzymeSelect").value = p.numEnzymes;
   document.getElementById("modeSelect").value = p.ordered ? "ordered" : "composition";
   document.getElementById("repeatSelect").value = p.allowRepeats ? "on" : "off";
+  syncCustomControlUI();
 }
 
 function showMenuScreen() {
@@ -1097,16 +1516,44 @@ function updateResiduePool() {
     if (aa) typedCounts[aa] = (typedCounts[aa] || 0) + 1;
   }
 
+  const typedOrder = [];
+  const typedSeen = {};
+  for (let i = 0; i < LEN; i++) {
+    const box = document.getElementById("sel" + i);
+    if (!box) continue;
+    const aa = normalizeAAInput(box.value);
+    if (!aa) continue;
+    if (!typedSeen[aa]) typedOrder.push(aa);
+    typedSeen[aa] = (typedSeen[aa] || 0) + 1;
+  }
+
+  const repeatColorMap = {};
+  typedOrder.filter(aa => (typedSeen[aa] || 0) > 1).forEach((aa, idx) => {
+    repeatColorMap[aa] = DUPLICATE_COLORS[idx % DUPLICATE_COLORS.length];
+  });
+
   const usedCounts = {};
   let accounted = 0;
   panel.querySelectorAll(".residue-chip").forEach(chip => {
     const aa = chip.dataset.aa;
     const alreadyUsed = usedCounts[aa] || 0;
     const shouldUse = alreadyUsed < (typedCounts[aa] || 0);
+    const repeatColor = repeatColorMap[aa] || null;
+
     chip.classList.toggle("used", shouldUse);
+    chip.classList.toggle("repeat-used", shouldUse && !!repeatColor);
+    chip.style.background = "";
+    chip.style.borderColor = "";
+    chip.style.color = "";
+
     if (shouldUse) {
       usedCounts[aa] = alreadyUsed + 1;
       accounted++;
+      if (repeatColor) {
+        chip.style.background = colorWithAlpha(repeatColor, 0.34);
+        chip.style.borderColor = colorWithAlpha(repeatColor, 0.82);
+        chip.style.color = "#f8f9fb";
+      }
     }
   });
 
@@ -1202,6 +1649,46 @@ function updateDuplicateHighlights() {
   }
 }
 
+function renderGhostRow() {
+  const ghost = document.getElementById("ghostRow");
+  if (!ghost) return;
+
+  ghost.innerHTML = "";
+  ghost.classList.remove("visible", "long-sequence");
+
+  if (isPepdleMode || gameOver) return;
+
+  if (LEN >= 10) ghost.classList.add("long-sequence");
+  for (let i = 0; i < LEN; i++) {
+    const cell = document.createElement("div");
+    cell.className = "ghost-cell";
+    cell.id = "ghost-" + i;
+    ghost.appendChild(cell);
+  }
+
+  ghost.classList.add("visible");
+  updateGhostPreview();
+}
+
+function updateGhostPreview() {
+  if (isPepdleMode) return;
+  const ghost = document.getElementById("ghostRow");
+  if (!ghost || !ghost.classList.contains("visible")) return;
+
+  for (let i = 0; i < LEN; i++) {
+    const source = document.getElementById("sel" + i);
+    const target = document.getElementById("ghost-" + i);
+    if (!target) continue;
+    target.textContent = source ? source.value : "";
+  }
+}
+
+function hideGhostRow() {
+  const ghost = document.getElementById("ghostRow");
+  if (!ghost) return;
+  ghost.classList.remove("visible");
+}
+
 function renderInputs() {
   const row = document.getElementById("inputRow");
   row.innerHTML = "";
@@ -1234,6 +1721,7 @@ function renderInputs() {
       updateDuplicateHighlights();
       updateFragmentTracking();
       updateResiduePool();
+      updateGhostPreview();
       if (input.value.length >= 3) {
         const next = document.getElementById("sel" + (i + 1));
         if (next) next.focus();
@@ -1254,6 +1742,7 @@ function renderInputs() {
     wrap.appendChild(input);
     row.appendChild(wrap);
   }
+  renderGhostRow();
   const first = document.getElementById("sel0");
   if (first) first.focus();
 }
@@ -1261,23 +1750,52 @@ function renderInputs() {
 function renderBoard() {
   const board = document.getElementById("board");
   board.innerHTML = "";
-  for (let r = 0; r < MAX_GUESSES; r++) {
-    const row = document.createElement("div");
-    row.className = "row";
-    row.id = "row" + r;
-    for (let c = 0; c < LEN; c++) {
-      const tile = document.createElement("div");
-      tile.className = "tile";
-      tile.id = "tile-" + r + "-" + c;
-      row.appendChild(tile);
+  board.classList.toggle("practice-progressive-board", !isPepdleMode);
+
+  // Classic keeps the familiar full Wordle-style grid.
+  if (isPepdleMode) {
+    for (let r = 0; r < MAX_GUESSES; r++) {
+      const row = document.createElement("div");
+      row.className = "row";
+      row.id = "row" + r;
+      for (let c = 0; c < LEN; c++) {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.id = "tile-" + r + "-" + c;
+        row.appendChild(tile);
+      }
+      board.appendChild(row);
     }
-    board.appendChild(row);
   }
 }
 
+function ensurePracticeHistoryRow(rowIndex) {
+  if (isPepdleMode) return;
+  let row = document.getElementById("row" + rowIndex);
+  if (row) return row;
+
+  const board = document.getElementById("board");
+  row = document.createElement("div");
+  row.className = "row";
+  row.id = "row" + rowIndex;
+
+  for (let c = 0; c < LEN; c++) {
+    const tile = document.createElement("div");
+    tile.className = "tile";
+    tile.id = "tile-" + rowIndex + "-" + c;
+    row.appendChild(tile);
+  }
+
+  board.appendChild(row);
+  return row;
+}
+
 function updateBoardRow(rowIndex, guess, feedback) {
+  if (!isPepdleMode) ensurePracticeHistoryRow(rowIndex);
+
   for (let c = 0; c < LEN; c++) {
     const tile = document.getElementById("tile-" + rowIndex + "-" + c);
+    if (!tile) continue;
     tile.textContent = guess[c];
     tile.className = "tile " + feedback[c];
   }
@@ -1322,13 +1840,38 @@ function tileSizeFor(len) {
 
 function applyLengthAwareLayout() {
   const compact = LEN >= 10;
+  const wide = LEN >= 10;
+  const twelveResidues = LEN >= 12;
   const infoBox = document.getElementById("infoBox");
   const residuePool = document.getElementById("residuePool");
   const board = document.getElementById("board");
 
-  if (infoBox) infoBox.classList.toggle("compact-sequence", compact);
-  if (residuePool) residuePool.classList.toggle("compact-sequence", compact);
+  if (infoBox) {
+    infoBox.classList.toggle("compact-sequence", compact);
+    infoBox.classList.toggle("wide-sequence", wide);
+  }
+  if (residuePool) {
+    residuePool.classList.toggle("compact-sequence", compact);
+    residuePool.classList.toggle("wide-sequence", wide);
+    residuePool.classList.toggle("twelve-residue-pool", twelveResidues);
+  }
   if (board) board.classList.toggle("compact-sequence", compact);
+}
+
+function closeHintMenu() {
+  const shell = document.getElementById("hintShell");
+  if (shell) shell.classList.remove("open");
+}
+
+function openHintMenu() {
+  const shell = document.getElementById("hintShell");
+  if (shell) shell.classList.add("open");
+}
+
+function toggleHintMenu() {
+  const shell = document.getElementById("hintShell");
+  if (!shell || shell.style.display === "none") return;
+  shell.classList.toggle("open");
 }
 
 function newGame() {
@@ -1351,11 +1894,10 @@ function newGame() {
     renderInputs();
     document.getElementById("guessBtn").disabled = false;
     document.getElementById("hintBtn").disabled = true; // classic mode: practice hints stay unavailable
-    document.getElementById("hintBtn").style.display = "none";
     document.getElementById("cutHintBtn").disabled = true;
-    document.getElementById("cutHintBtn").style.display = "none";
     document.getElementById("revealAnswerBtn").disabled = true;
-    document.getElementById("revealAnswerBtn").style.display = "none";
+    document.getElementById("hintShell").style.display = "none";
+    closeHintMenu();
 
     const round = buildPepdleRound(LEN);
     secret = round.peptide;
@@ -1383,19 +1925,23 @@ function newGame() {
   setMessage("");
   renderInputs();
   document.getElementById("guessBtn").disabled = false;
+  document.getElementById("hintShell").style.display = "flex";
+  closeHintMenu();
   document.getElementById("hintBtn").disabled = false;
-  document.getElementById("hintBtn").style.display = "inline-block";
   document.getElementById("cutHintBtn").disabled = false;
-  document.getElementById("cutHintBtn").style.display = "inline-block";
-  document.getElementById("cutHintBtn").textContent = "✂ Reveal Cut Site";
+  document.getElementById("cutHintBtn").textContent = "Reveal Cut Site";
   document.getElementById("revealAnswerBtn").disabled = false;
-  document.getElementById("revealAnswerBtn").style.display = "inline-block";
 
   const { peptide, clues } = buildPeptideAndClues(config);
   secret = peptide;
   lastRoundClues = clues;
   renderInfo(clues, config.ordered);
   renderResiduePool();
+
+  const activePreset = document.getElementById("presetSelect").value;
+  if (activePreset !== "custom" && PRESETS[activePreset] && PRESETS[activePreset].autoRevealNTerm) {
+    revealHint();
+  }
 }
 
 function generateFeedbackNote(guess, secretSeq, enzymeNames) {
@@ -1450,10 +1996,8 @@ function renderCutMap(enzymeNames) {
     html += `<div style="width:${tileSize}px; height:${tileSize}px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#343b48; border-radius:6px; font-weight:700; font-size:0.75rem;">${aa}</div>`;
 
     if (i < secret.length - 1) {
-      const boundaryIndex = i + 1;
-      const cutHere = boundaries[boundaryIndex];
-      const boundaryAllowed = !allowedBoundaries || allowedBoundaries.includes(boundaryIndex);
-      if (boundaryAllowed && cutHere && cutHere.length) {
+      const boundaryIndex = i + 1;      const cutHere = boundaries[boundaryIndex];
+      if (cutHere && cutHere.length) {
         html += `
           <div style="display:flex; flex-direction:column; align-items:center; margin:0 4px; min-width:52px; flex-shrink:0;">
             <div style="width:2px; height:${tileSize}px; background:var(--accent);"></div>
@@ -1530,8 +2074,10 @@ function annotateCutLines(containerId, enzymeNames, includeLabels, allowedBounda
   childEls.forEach((el, i) => {
     container.appendChild(el);
     if (i < childEls.length - 1) {
-      const cutHere = boundaries[i + 1];
-      if (cutHere && cutHere.length) {
+      const boundaryIndex = i + 1;
+      const cutHere = boundaries[boundaryIndex];
+      const boundaryAllowed = !allowedBoundaries || allowedBoundaries.includes(boundaryIndex);
+      if (boundaryAllowed && cutHere && cutHere.length) {
         const elHeight = el.offsetHeight || 48;
         const wrapper = document.createElement("div");
         wrapper.dataset.divider = "true";
@@ -1540,17 +2086,18 @@ function annotateCutLines(containerId, enzymeNames, includeLabels, allowedBounda
         wrapper.style.height = elHeight + "px";
         wrapper.style.flexShrink = "0";
         wrapper.style.margin = "0 -1px";
+        wrapper.style.overflow = "visible";
 
         const primaryColor = ENZYME_COLORS[cutHere[0]] || "var(--accent)";
         const line = document.createElement("div");
         line.style.position = "absolute";
         line.style.left = "50%";
-        line.style.top = "9%";
+        line.style.top = LEN >= 10 ? "4%" : "2%";
         line.style.width = "2px";
-        line.style.height = "82%";
+        line.style.height = LEN >= 10 ? "92%" : "96%";
         line.style.borderRadius = "999px";
         line.style.background = primaryColor;
-        line.style.boxShadow = `0 0 0 1px ${colorWithAlpha(primaryColor, 0.08)}, 0 0 8px ${colorWithAlpha(primaryColor, 0.18)}`;
+        line.style.boxShadow = `0 0 0 1px ${colorWithAlpha(primaryColor, 0.10)}, 0 0 10px ${colorWithAlpha(primaryColor, 0.24)}`;
         line.style.transform = "translateX(-50%)";
         wrapper.appendChild(line);
 
@@ -1574,11 +2121,11 @@ function annotateCutLines(containerId, enzymeNames, includeLabels, allowedBounda
             chip.dataset.enzymeChip = "true";
             chip.textContent = name;
             const compactChip = LEN >= 10;
-            chip.style.fontSize = compactChip ? "0.50rem" : "0.58rem";
-            chip.style.fontWeight = "600";
-            chip.style.letterSpacing = "0.1px";
-            chip.style.lineHeight = "1.15";
-            chip.style.padding = compactChip ? "1px 5px" : "2px 6px";
+            chip.style.fontSize = compactChip ? "0.52rem" : "0.60rem";
+            chip.style.fontWeight = "650";
+            chip.style.letterSpacing = "0.12px";
+            chip.style.lineHeight = "1.2";
+            chip.style.padding = compactChip ? "2px 6px" : "3px 8px";
             chip.style.borderRadius = "999px";
             chip.style.color = color;
             chip.style.border = `1px solid ${colorWithAlpha(color, 0.36)}`;
@@ -1589,10 +2136,10 @@ function annotateCutLines(containerId, enzymeNames, includeLabels, allowedBounda
 
           if (toggle) {
             label.style.bottom = "100%";
-            label.style.marginBottom = LEN >= 10 ? "3px" : "4px";
+            label.style.marginBottom = LEN >= 10 ? "6px" : "8px";
           } else {
             label.style.top = "100%";
-            label.style.marginTop = LEN >= 10 ? "3px" : "4px";
+            label.style.marginTop = LEN >= 10 ? "6px" : "8px";
           }
           wrapper.appendChild(label);
           toggle = !toggle;
@@ -1763,8 +2310,9 @@ function submitGuess() {
   }
 
   if (won) {
-    setMessage("Sequenced correctly! 🎉", "win");
+    setMessage("✓ Sequenced correctly", "win");
     gameOver = true;
+    hideGhostRow();
     document.getElementById("guessBtn").disabled = true;
     document.getElementById("revealAnswerBtn").disabled = true;
     if (!isPepdleMode) {
@@ -1777,6 +2325,7 @@ function submitGuess() {
   } else if (guessesLeft <= 0) {
     setMessage("Out of guesses. The sequence was: " + secret.join("-"), "lose");
     gameOver = true;
+    hideGhostRow();
     document.getElementById("guessBtn").disabled = true;
     if (!isPepdleMode) renderCutMap(lastRoundClues.map(c => c.name));
   } else {
@@ -1789,6 +2338,7 @@ function submitGuess() {
     updateDuplicateHighlights();
     updateFragmentTracking();
     updateResiduePool();
+    updateGhostPreview();
     const first = document.getElementById("sel0");
     if (first) first.focus();
   }
@@ -1825,24 +2375,62 @@ function revealHint() {
     hintDiv.innerHTML = `🔬 <b>Edman degradation:</b> N-terminus is <span style="color:var(--accent)">${secret[0]}</span>`;
     box.appendChild(hintDiv);
   }
+
+  const first = document.getElementById("sel0");
+  if (first) {
+    first.value = secret[0];
+    first.classList.remove("invalid");
+  }
+
   highlightNTermHint();
+  updateDuplicateHighlights();
+  updateFragmentTracking();
+  updateResiduePool();
+  updateGhostPreview();
   document.getElementById("hintBtn").disabled = true;
 }
 
 document.getElementById("guessBtn").addEventListener("click", submitGuess);
 document.getElementById("newGameBtn").addEventListener("click", newGame);
+document.getElementById("hintToggleBtn").addEventListener("click", toggleHintMenu);
 document.getElementById("hintBtn").addEventListener("click", revealHint);
 document.getElementById("cutHintBtn").addEventListener("click", revealCutSiteHint);
 document.getElementById("revealAnswerBtn").addEventListener("click", revealAnswer);
+document.addEventListener("click", (e) => {
+  const shell = document.getElementById("hintShell");
+  if (!shell) return;
+  if (!shell.contains(e.target)) closeHintMenu();
+});
 document.getElementById("presetSelect").addEventListener("change", handlePresetChange);
+document.getElementById("lenSelect").addEventListener("input", syncCustomControlUI);
 document.getElementById("lenSelect").addEventListener("change", newGame);
+document.getElementById("enzymeSelect").addEventListener("input", syncCustomControlUI);
 document.getElementById("enzymeSelect").addEventListener("change", newGame);
-document.getElementById("modeSelect").addEventListener("change", newGame);
-document.getElementById("repeatSelect").addEventListener("change", newGame);
-document.getElementById("howToBtn").addEventListener("click", () => {
-  const el = document.getElementById("howToPanel");
+document.querySelectorAll("[data-mode-option]").forEach(btn => {
+  btn.addEventListener("click", () => setFragmentMode(btn.dataset.modeOption));
+});
+document.getElementById("repeatToggle").addEventListener("change", (e) => {
+  setRepeatsValue(e.target.checked ? "on" : "off");
+});
+document.querySelectorAll("[data-info-wrap] .info-btn").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const wrap = btn.parentElement;
+    const wasOpen = wrap.classList.contains("open");
+    document.querySelectorAll("[data-info-wrap].open").forEach(el => el.classList.remove("open"));
+    if (!wasOpen) wrap.classList.add("open");
+  });
+});
+document.addEventListener("click", (e) => {
+  document.querySelectorAll("[data-info-wrap].open").forEach(wrap => {
+    if (!wrap.contains(e.target)) wrap.classList.remove("open");
+  });
+});
+document.getElementById("referenceGuideBtn").addEventListener("click", () => {
+  const el = document.getElementById("referenceGuidePanel");
   el.style.display = el.style.display === "none" ? "block" : "none";
 });
+syncCustomControlUI();
 window.addEventListener("resize", () => {
   document.documentElement.style.setProperty("--tile-size", tileSizeFor(LEN) + "px");
 
@@ -1858,11 +2446,6 @@ window.addEventListener("resize", () => {
     });
     fitRowWithoutScroll("inputRow");
   }
-});
-document.getElementById("refTableBtn").addEventListener("click", () => {
-  const el = document.getElementById("refTable");
-  const isHidden = el.style.display === "none";
-  el.style.display = isHidden ? "block" : "none";
 });
 showMenuScreen();
 </script>
