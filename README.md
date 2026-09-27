@@ -1,5 +1,9 @@
 # 🧬 Pepdle
 
+## ▶ Play Pepdle
+
+[Play Pepdle here](https://sampleverse.github.io/Pepdle/)
+
 Not really sure what i cooked up in here i just thought it'd be funny if i made a Wordle game but for DNA sequencing. I hated biochem so much i suddenly wanted a viable learning material for teaching Polypeptide Sequencing. Here we are with Pepdle
 
 ## About
