@@ -14,7 +14,7 @@ Players reconstruct an unknown peptide sequence using information from different
 
 ## Current Features
 
-- Pepdle Classic mode
+- Pepdl Classic mode
 - Practice Mode with adjustable difficulty
 - Multiple cleavage enzymes
 - Ordered and composition-only fragment clues
