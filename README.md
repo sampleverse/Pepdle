@@ -14,6 +14,15 @@ Players reconstruct an unknown peptide sequence using information from different
 
 ## Latest Update
 
+### Mini update: sequencing clarity & puzzle logic
+- Refined the shared Practice/Classic input-row annotations with taller cleavage markers and cleaner enzyme-label spacing.
+- Removed the experimental bond rails for a cleaner final-sequence row.
+- Kept the current fixed long-sequence layout for 10–12 residue peptides.
+- Added anti-free-win fragment ordering so displayed enzyme fragments do not accidentally reproduce the full peptide in sequence order.
+- Opening enzyme selection now avoids trivial no-cut clues and prefers more informative fragment sets when available.
+- Practice and Pepdle Classic now share the same updated sequencing-row behavior and clue-generation safeguards.
+
+
 ### Classic Mode overhaul
 - Classic now begins with the residue composition as baseline evidence.
 - Sequencing evidence unlocks progressively after failed guesses.
