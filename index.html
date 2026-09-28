@@ -1521,7 +1521,7 @@
       <span class="mode-choice-arrow" aria-hidden="true">›</span>
     </button>
 
-    <div class="menu-note">A rudimentary silly thingy, still being worked on by yours truly, John Rec.</div>
+    <div class="menu-note">A rudimentary silly doohickey currently being assembled by yours truly, Sampleverse (J.Ra)</div>
   </div>
 </div>
 
@@ -1785,15 +1785,19 @@ function transitionBetweenScreens(fromEl, toEl, toDisplay, afterShow) {
 function showMenuScreen(animate = true) {
   const menu = document.getElementById("menuScreen");
   const game = document.getElementById("gameScreen");
+
   document.getElementById("backToMenuBtn").style.visibility = "hidden";
 
   if (!animate) {
+    parkResiduePoolOutsideEvidence();
     menu.style.display = "flex";
     game.style.display = "none";
     return;
   }
 
-  transitionBetweenScreens(game, menu, "flex");
+  // Keep the Classic card visually intact during its exit animation.
+  // Park the shared residue pool only after the screen swap completes.
+  transitionBetweenScreens(game, menu, "flex", parkResiduePoolOutsideEvidence);
 }
 
 function showGameScreen(afterShow) {
@@ -1849,7 +1853,25 @@ function showInitialLoadingScreen() {
     { type: "note", text: "I hope my Biochem Prof likes this" },
     { type: "note", text: "I hope my Biochem Ph.d oomf likes this :3" },
     { type: "note", text: "I hope my Biochem Prof and Ph.d oomf like this" },
-    { type: "note", text: "Special thanks to my early testers :3" }
+    { type: "note", text: "Special thanks to my early testers :3" },
+    { type: "note", text: "Illocano Fantasy" },
+    { type: "note", text: "Larping Harry Potter for this" },
+    { type: "note", text: "S-Y-L-T-H-E-R-I-N-E?" },
+    { type: "note", text: "Evil protein structures of doom and despair" },
+    { type: "note", text: "Why do they fold like that?" },
+    { type: "note", text: "Why don't they fold at all?" },
+    { type: "note", text: "What are we genuinely doing wrong with this protein" },
+    { type: "note", text: "Benzene rings more like" },
+    { type: "note", text: "WHY DO THEY SEQUENCE LIKE THAT" },
+    { type: "note", text: "Prolene move✌️😭" },
+    { type: "note", text: "Furina De Fontaine :3" },
+    { type: "note", text: "Still work in progress..." },
+    { type: "note", text: "Wouldn't it be funny if we made DNA Sequencing into a Wordle type game?" },
+    { type: "note", text: "Idk Brolene you tell me" },
+    { type: "note", text: "Isoteric? you mean ESOTERIC???" },
+    { type: "note", text: "ISOTERIC, ISOELECTRIC, SAME THING" },
+    { type: "note", text: "IT'S ISOELECTRIC YOU TROGLODYTE" },
+    { type: "note", text: "Isoteric isn't even a word" }
   ];
 
   const loadDuration = 3000 + Math.floor(Math.random() * 2001);
@@ -2432,6 +2454,7 @@ function parkResiduePoolOutsideEvidence() {
   const panel = document.getElementById("residuePool");
   const infoBox = document.getElementById("infoBox");
   if (!panel || !infoBox) return;
+
   if (panel.parentElement !== infoBox.parentElement || panel.previousElementSibling !== infoBox) {
     infoBox.insertAdjacentElement("afterend", panel);
   }
