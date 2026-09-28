@@ -2208,6 +2208,7 @@ function syncClassicRevealToAttempts() {
 }
 
 function renderPepdleInfo(animateNewStage = false) {
+  parkResiduePoolOutsideEvidence();
   const state = getClassicRevealState();
   pepdleRevealCount = state.enzymeCount;
 
@@ -2277,6 +2278,7 @@ function renderPepdleInfo(animateNewStage = false) {
 }
 
 function renderInfo(clues, ordered) {
+  parkResiduePoolOutsideEvidence();
   const blocks = clues.map((c, clueIndex) => {
     const color = ENZYME_COLORS[c.name] || "var(--accent)";
     const fragHtml = c.frags.map((f, fragIndex) => {
@@ -2426,6 +2428,16 @@ function updateFragmentTracking() {
 }
 
 
+function parkResiduePoolOutsideEvidence() {
+  const panel = document.getElementById("residuePool");
+  const infoBox = document.getElementById("infoBox");
+  if (!panel || !infoBox) return;
+  if (panel.parentElement !== infoBox.parentElement || panel.previousElementSibling !== infoBox) {
+    infoBox.insertAdjacentElement("afterend", panel);
+  }
+  panel.classList.remove("integrated-pool");
+}
+
 function syncResiduePoolPlacement() {
   const panel = document.getElementById("residuePool");
   const infoBox = document.getElementById("infoBox");
@@ -2438,10 +2450,7 @@ function syncResiduePoolPlacement() {
     }
     panel.classList.add("integrated-pool");
   } else {
-    if (panel.parentElement !== infoBox.parentElement || panel.previousElementSibling !== infoBox) {
-      infoBox.insertAdjacentElement("afterend", panel);
-    }
-    panel.classList.remove("integrated-pool");
+    parkResiduePoolOutsideEvidence();
   }
 }
 
@@ -2690,10 +2699,10 @@ function renderInputs() {
     input.addEventListener("input", () => {
       input.classList.remove("invalid");
       if (input.value.length > 0) {
-        const capitalized = input.value.charAt(0).toUpperCase() + input.value.slice(1);
-        if (capitalized !== input.value) {
+        const normalizedCase = input.value.charAt(0).toUpperCase() + input.value.slice(1).toLowerCase();
+        if (normalizedCase !== input.value) {
           const cursorPos = input.selectionStart;
-          input.value = capitalized;
+          input.value = normalizedCase;
           input.setSelectionRange(cursorPos, cursorPos);
         }
       }
