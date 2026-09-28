@@ -14,6 +14,14 @@ Players reconstruct an unknown peptide sequence using information from different
 
 ## Latest Update
 
+### Patch: Classic re-entry & loader polish
+- Fixed the shared residue pool disappearing after leaving and re-entering Pepdle Classic.
+- Adjusted residue-pool lifecycle timing so the Classic exit animation stays visually intact.
+- Restored live amino-acid input casing to three-letter formatting such as `Arg`, `Gly`, and `Met`.
+- Expanded the loading-screen dialogue bank with additional creator quips.
+- Updated the landing-page creator note to credit Sampleverse (J.Ra).
+
+
 ### Mini update: sequencing clarity & puzzle logic
 - Refined the shared Practice/Classic input-row annotations with taller cleavage markers and cleaner enzyme-label spacing.
 - Removed the experimental bond rails for a cleaner final-sequence row.
