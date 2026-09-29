@@ -14,6 +14,13 @@ Players reconstruct an unknown peptide sequence using information from different
 
 ## Latest Update
 
+### Patch: social preview & landing hero
+- Added a Pepdle social/link-preview banner for shared links.
+- Added Open Graph and Twitter/X card metadata.
+- Added the banner as a visible landing-page hero above the mode cards.
+- Added social preview title, description, and canonical page URL metadata.
+
+
 ### Patch: Classic re-entry & loader polish
 - Fixed the shared residue pool disappearing after leaving and re-entering Pepdle Classic.
 - Adjusted residue-pool lifecycle timing so the Classic exit animation stays visually intact.
