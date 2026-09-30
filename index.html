@@ -247,6 +247,12 @@
     box-shadow: inset 0 0 0 1px rgba(95, 196, 214, 0.34);
   }
 
+  .aa-input.c-term-hint {
+    background: rgba(217, 129, 143, 0.24);
+    color: #fff6f7;
+    box-shadow: inset 0 0 0 1px rgba(217, 129, 143, 0.30);
+  }
+
   .aa-input.c-term-final {
     background: rgba(217, 129, 143, 0.28);
     color: #fff6f7;
@@ -707,6 +713,277 @@
     min-width: 0;
     padding: 0 18px;
   }
+
+  /* Test build: matured action hierarchy */
+  #guessBtn {
+    min-width: 138px;
+    border: 1px solid rgba(111, 168, 255, 0.38);
+    border-radius: 12px;
+    background: rgba(111, 168, 255, 0.13);
+    color: #dce9ff;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.035),
+      0 7px 18px rgba(0,0,0,0.12);
+    letter-spacing: 0.01em;
+    transition:
+      transform 0.14s ease,
+      background 0.14s ease,
+      border-color 0.14s ease,
+      box-shadow 0.14s ease;
+  }
+  #guessBtn:hover:not(:disabled),
+  #guessBtn:focus-visible:not(:disabled) {
+    transform: translateY(-1px);
+    background: rgba(111, 168, 255, 0.18);
+    border-color: rgba(111, 168, 255, 0.58);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      0 9px 22px rgba(0,0,0,0.16);
+  }
+  #guessBtn:active:not(:disabled) {
+    transform: translateY(0);
+    background: rgba(111, 168, 255, 0.22);
+  }
+
+  #newGameBtn {
+    height: 44px;
+    padding: 0 12px;
+    border-color: transparent;
+    color: #aeb7c5;
+    opacity: 0.88;
+    font-weight: 650;
+    transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+  }
+  #newGameBtn:hover:not(:disabled),
+  #newGameBtn:focus-visible:not(:disabled) {
+    opacity: 1;
+    color: #e4e9ef;
+    background: rgba(255,255,255,0.035);
+    border-color: rgba(154,163,178,0.2);
+  }
+  #newGameBtn .new-sequence-icon {
+    display: inline-block;
+    margin-right: 6px;
+    transition: transform 0.2s ease;
+  }
+  #newGameBtn:hover .new-sequence-icon {
+    transform: rotate(25deg);
+  }
+
+  @keyframes newSequenceSpin {
+    0% { transform: rotate(0deg) scale(1); }
+    35% { transform: rotate(210deg) scale(1.1); }
+    72% { transform: rotate(350deg) scale(0.97); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  #newGameBtn.refreshing .new-sequence-icon {
+    animation: newSequenceSpin 430ms cubic-bezier(.18,.82,.3,1);
+  }
+
+  /* Test build: explicit prepare -> animate states for reliable replay across browsers. */
+  #gameScreen #infoBox.evidence-refresh-prepare {
+    opacity: 0;
+    transform: translateY(5px) scale(0.997);
+    transition: none !important;
+  }
+
+  #gameScreen #infoBox.evidence-refresh-animate {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition:
+      opacity 620ms cubic-bezier(.18,.82,.24,1),
+      transform 700ms cubic-bezier(.18,.82,.24,1);
+  }
+
+  .fragment-soft-prepare {
+    opacity: 0;
+    transform: translateY(4px) scale(0.998);
+    transition: none !important;
+  }
+
+  .fragment-soft-animate {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition:
+      opacity 520ms cubic-bezier(.18,.82,.24,1),
+      transform 620ms cubic-bezier(.18,.82,.24,1);
+    transition-delay: var(--fragment-delay, 0ms);
+  }
+
+  .hint-toggle {
+    --hint-charge: 1;
+    min-width: 52px;
+    padding: 0 11px;
+    border-color: rgba(111, 168, 255, 0.18);
+    background: rgba(255,255,255,0.018);
+    overflow: hidden;
+    transition:
+      background 0.16s ease,
+      border-color 0.16s ease,
+      transform 0.16s ease;
+  }
+  .hint-toggle .hint-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    opacity: calc(0.45 + (var(--hint-charge) * 0.55));
+    filter:
+      saturate(calc(0.55 + (var(--hint-charge) * 0.65)))
+      brightness(calc(0.78 + (var(--hint-charge) * 0.35)));
+    transition: opacity 0.2s ease, filter 0.2s ease, transform 0.2s ease;
+  }
+  .hint-toggle .hint-label {
+    font-size: 0.84rem;
+  }
+  .hint-toggle .hint-count {
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid rgba(111,168,255,0.2);
+    background: rgba(111,168,255,0.08);
+    color: #bcd4fb;
+    font-size: 0.68rem;
+    font-weight: 750;
+  }
+  .hint-toggle:hover:not(:disabled),
+  .hint-toggle:focus-visible:not(:disabled),
+  .hint-shell.open .hint-toggle {
+    border-color: rgba(111,168,255,0.38);
+    background: rgba(111,168,255,0.07);
+  }
+  .hint-shell.open .hint-toggle .hint-icon {
+    transform: translateY(-1px) rotate(-5deg);
+  }
+
+  @keyframes hintAttentionNudge {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    30% { transform: translateY(-2px) rotate(-6deg); }
+    60% { transform: translateY(-1px) rotate(5deg); }
+  }
+  @keyframes hintUseFlare {
+    0% { transform: scale(1); filter: brightness(1); }
+    45% { transform: scale(1.14); filter: brightness(1.45); }
+    100% { transform: scale(1); filter: brightness(1); }
+  }
+  .hint-shell.hint-nudge .hint-icon {
+    animation: hintAttentionNudge 0.65s ease;
+  }
+  .hint-shell.hint-flare .hint-icon {
+    animation: hintUseFlare 0.55s ease;
+  }
+
+  .hint-menu {
+    min-width: 224px;
+    padding: 10px;
+    gap: 9px;
+  }
+  .hint-menu-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 2px 3px 3px;
+  }
+  .hint-menu-title {
+    font-size: 0.78rem;
+    font-weight: 760;
+    color: #e7ebf1;
+  }
+  .hint-menu-subtitle {
+    font-size: 0.69rem;
+    line-height: 1.3;
+    color: #8f99a8;
+  }
+  #nextHintBtn {
+    width: 100%;
+    min-height: 42px;
+    padding: 8px 12px;
+    border: 1px solid rgba(111,168,255,0.26);
+    border-radius: 11px;
+    background: rgba(111,168,255,0.09);
+    color: #d7e6ff;
+    text-align: left;
+  }
+  #nextHintBtn:hover:not(:disabled) {
+    background: rgba(111,168,255,0.14);
+    border-color: rgba(111,168,255,0.42);
+  }
+  .next-hint-main {
+    display: block;
+    font-size: 0.81rem;
+    font-weight: 760;
+  }
+  .next-hint-detail {
+    display: block;
+    margin-top: 2px;
+    color: #94a3b6;
+    font-size: 0.68rem;
+    font-weight: 560;
+  }
+  #chooseHintBtn {
+    width: 100%;
+    padding: 6px 8px;
+    border: 0;
+    background: transparent;
+    color: #aeb7c5;
+    font-size: 0.72rem;
+    font-weight: 650;
+    text-align: left;
+  }
+  #chooseHintBtn:hover {
+    color: #e3e8ef;
+    background: rgba(255,255,255,0.025);
+  }
+  .manual-hint-options {
+    display: none;
+    flex-direction: column;
+    gap: 7px;
+    padding-top: 1px;
+  }
+  .hint-menu.manual-open .manual-hint-options {
+    display: flex;
+  }
+  .manual-hint-options .secondary {
+    min-width: 0;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 7px 10px;
+    font-size: 0.76rem;
+  }
+  .hint-divider {
+    height: 1px;
+    background: rgba(154,163,178,0.13);
+    margin: 1px 0;
+  }
+  #revealAnswerBtn.subdued-action {
+    width: 100%;
+    min-width: 0;
+    justify-content: flex-start;
+    opacity: 0.72;
+    padding: 7px 10px;
+    font-size: 0.74rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hint-shell.hint-nudge .hint-icon,
+    .hint-shell.hint-flare .hint-icon {
+      animation: none;
+    }
+    #guessBtn,
+    #newGameBtn .new-sequence-icon,
+    #infoBox,
+    .fragment-soft-prepare,
+    .fragment-soft-animate,
+    .hint-toggle,
+    .hint-toggle .hint-icon {
+      transition: none;
+    }
+  }
   .hint-shell {
     position: relative;
     display: inline-flex;
@@ -724,8 +1001,7 @@
     gap: 6px;
     border-radius: 12px;
     line-height: 1;
-  }
-  .hint-toggle .hint-icon {
+  }  .hint-toggle .hint-icon {
     transform: translateY(-0.5px);
   }
   .hint-toggle .chevron {
@@ -1702,12 +1978,32 @@
 <div class="action-area">
   <div class="action-row main-actions">
     <button id="guessBtn">Submit Guess</button>
-    <button class="secondary" id="newGameBtn">New Sequence</button>
+    <button class="secondary" id="newGameBtn" title="Generate a new sequence"><span class="new-sequence-icon" aria-hidden="true">↻</span>New Sequence</button>
     <div class="hint-shell" id="hintShell">
-      <button class="secondary hint-toggle" id="hintToggleBtn" type="button" aria-label="Hints" title="Hints"><span class="hint-icon">💡</span><span>Hints</span><span class="chevron">▾</span></button>
+      <button class="secondary hint-toggle" id="hintToggleBtn" type="button" aria-label="Hints" aria-expanded="false" title="Hints">
+        <span class="hint-icon" aria-hidden="true">💡</span>
+        <span class="hint-label">Hints</span>
+        <span class="hint-count" id="hintCount">0</span>
+        <span class="chevron">▾</span>
+      </button>
       <div class="hint-menu" id="hintMenu">
-        <button class="secondary" id="hintBtn" type="button">Reveal N-Terminus</button>
-        <button class="secondary" id="cutHintBtn" type="button">Reveal Cut Site</button>
+        <div class="hint-menu-heading">
+          <span class="hint-menu-title">Need a nudge?</span>
+          <span class="hint-menu-subtitle">Use the next progressive hint, or choose one manually for teaching.</span>
+        </div>
+
+        <button id="nextHintBtn" type="button">
+          <span class="next-hint-main">Give me the next hint</span>
+          <span class="next-hint-detail" id="nextHintDetail">Next: N-Terminus</span>
+        </button>
+
+        <button id="chooseHintBtn" type="button" aria-expanded="false">Choose a hint ▾</button>
+        <div class="manual-hint-options" id="manualHintOptions">
+          <button class="secondary" id="hintBtn" type="button">Reveal N-Terminus</button>
+          <button class="secondary" id="cutHintBtn" type="button">Reveal Cut Site</button>          <button class="secondary" id="cTermHintBtn" type="button">Reveal C-Terminus</button>
+        </div>
+
+        <div class="hint-divider"></div>
         <button class="secondary subdued-action" id="revealAnswerBtn" type="button">Reveal Answer</button>
       </div>
     </div>
@@ -2064,6 +2360,11 @@ let lastRoundClues = [];
 let currentPracticeOrdered = true;
 let residuePoolOrder = [];
 let revealedCutHintBoundaries = [];
+let practiceNTermHintRevealed = false;
+let practiceCTermHintRevealed = false;
+let hintNudgeTimers = [];
+let lastPracticeActivityAt = Date.now();
+let evidenceRefreshCleanupTimer = null;
 const MAX_GUESSES = 6;
 
 function generatePeptide(len, allowRepeats) {
@@ -2679,7 +2980,7 @@ function updateDuplicateHighlights() {
     const box = document.getElementById("sel" + i);
     if (!box) continue;
     const norm = values[i];
-    const isTerminal = box.classList.contains("n-term-hint") || box.classList.contains("n-term-final") || box.classList.contains("c-term-final");
+    const isTerminal = box.classList.contains("n-term-hint") || box.classList.contains("n-term-final") || box.classList.contains("c-term-hint") || box.classList.contains("c-term-final");
 
     box.style.boxShadow = "";
     box.style.background = "";
@@ -2698,8 +2999,7 @@ function updateDuplicateHighlights() {
         box.style.background = colorWithAlpha(repeatColor, 0.22);
         box.style.color = "#f5f7fa";
         box.style.border = `1px solid ${colorWithAlpha(repeatColor, 0.34)}`;
-      }
-    }
+      }    }
   }
 }
 
@@ -2776,6 +3076,7 @@ function renderInputs() {
       updateFragmentTracking();
       updateResiduePool();
       updateGhostPreview();
+      recordPracticeActivity();
       if (input.value.length >= 3) {
         const next = document.getElementById("sel" + (i + 1));
         if (next) next.focus();
@@ -2783,10 +3084,18 @@ function renderInputs() {
     });
 
     input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        recordPracticeActivity();
+        if (isInputRowComplete()) {
+          submitGuess();
+        } else {
+          focusFirstIncompleteInput();
+        }
+      } else if (e.key === " ") {
         e.preventDefault();
         const next = document.getElementById("sel" + (i + 1));
-        if (next) next.focus(); else submitGuess();
+        if (next) next.focus();
       } else if (e.key === "Backspace" && input.value === "") {
         const prev = document.getElementById("sel" + (i - 1));
         if (prev) { prev.focus(); }
@@ -2920,18 +3229,268 @@ function applyLengthAwareLayout() {
   if (board) board.classList.toggle("compact-sequence", compact);
 }
 
+function isInputRowComplete() {
+  for (let i = 0; i < LEN; i++) {
+    const box = document.getElementById("sel" + i);
+    if (!box || !normalizeAAInput(box.value)) return false;
+  }
+  return true;
+}
+
+function focusFirstIncompleteInput() {
+  for (let i = 0; i < LEN; i++) {
+    const box = document.getElementById("sel" + i);
+    if (box && !normalizeAAInput(box.value)) {
+      box.focus();
+      box.classList.add("invalid");
+      window.setTimeout(() => box.classList.remove("invalid"), 420);
+      return;
+    }
+  }
+}
+
+function clearHintNudgeTimers() {
+  hintNudgeTimers.forEach(timer => window.clearTimeout(timer));
+  hintNudgeTimers = [];
+}
+
+function triggerHintNudge(kind = "nudge") {
+  if (isPepdleMode || gameOver) return;
+  const shell = document.getElementById("hintShell");
+  const nextBtn = document.getElementById("nextHintBtn");
+  if (!shell || shell.style.display === "none" || (nextBtn && nextBtn.disabled)) return;
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+  const className = kind === "flare" ? "hint-flare" : "hint-nudge";
+  shell.classList.remove("hint-nudge", "hint-flare");
+  void shell.offsetWidth;
+  shell.classList.add(className);
+  window.setTimeout(() => shell.classList.remove(className), kind === "flare" ? 620 : 760);
+}
+
+function scheduleHintNudges() {
+  clearHintNudgeTimers();
+  if (isPepdleMode || gameOver) return;
+
+  hintNudgeTimers.push(window.setTimeout(() => {
+    if (Date.now() - lastPracticeActivityAt >= 12000) triggerHintNudge("nudge");
+  }, 12500));
+
+  hintNudgeTimers.push(window.setTimeout(() => {
+    if (Date.now() - lastPracticeActivityAt >= 26000) triggerHintNudge("nudge");
+  }, 27000));
+}
+
+function recordPracticeActivity() {
+  if (isPepdleMode || gameOver) return;
+  lastPracticeActivityAt = Date.now();
+  scheduleHintNudges();
+}
+
+function getPracticeHintState() {
+  const names = lastRoundClues.map(c => c.name);
+  const boundaries = computeCutBoundaries(names);
+  const allCuts = Object.keys(boundaries).map(Number).sort((a, b) => a - b);
+  const unrevealedCuts = allCuts.filter(idx => !revealedCutHintBoundaries.includes(idx));
+
+  return {
+    allCuts,
+    unrevealedCuts,
+    total: 2 + allCuts.length,
+    used: (practiceNTermHintRevealed ? 1 : 0) + revealedCutHintBoundaries.length + (practiceCTermHintRevealed ? 1 : 0)
+  };
+}
+
+function updateHintUI() {
+  if (isPepdleMode) return;
+
+  const shell = document.getElementById("hintShell");
+  const toggle = document.getElementById("hintToggleBtn");
+  const count = document.getElementById("hintCount");
+  const nextBtn = document.getElementById("nextHintBtn");
+  const detail = document.getElementById("nextHintDetail");
+  const nBtn = document.getElementById("hintBtn");
+  const cutBtn = document.getElementById("cutHintBtn");
+  const cBtn = document.getElementById("cTermHintBtn");
+  if (!shell || !toggle || !count || !nextBtn || !detail) return;
+
+  const state = getPracticeHintState();
+  const remaining = Math.max(0, state.total - state.used);
+  const charge = state.total ? remaining / state.total : 0;
+
+  toggle.style.setProperty("--hint-charge", charge.toFixed(2));
+  count.textContent = remaining;
+  count.title = remaining + " progressive hint" + (remaining === 1 ? "" : "s") + " remaining";
+
+  if (!practiceNTermHintRevealed) {
+    detail.textContent = "Next: N-Terminus";
+    nextBtn.disabled = false;
+  } else if (state.unrevealedCuts.length) {
+    detail.textContent = "Next: cleavage evidence";
+    nextBtn.disabled = false;
+  } else if (!practiceCTermHintRevealed) {
+    detail.textContent = "Next: C-Terminus";
+    nextBtn.disabled = false;
+  } else {
+    detail.textContent = "All progressive hints revealed";
+    nextBtn.disabled = true;
+  }
+
+  if (nBtn) nBtn.disabled = practiceNTermHintRevealed;
+  if (cBtn) cBtn.disabled = practiceCTermHintRevealed;
+  if (cutBtn) {
+    cutBtn.disabled = state.unrevealedCuts.length === 0;
+    cutBtn.textContent = state.unrevealedCuts.length === 0
+      ? "✂ All Cut Sites Revealed"
+      : (revealedCutHintBoundaries.length ? "✂ Reveal Another Cut" : "Reveal Cut Site");
+  }
+}
+
 function closeHintMenu() {
   const shell = document.getElementById("hintShell");
+  const toggle = document.getElementById("hintToggleBtn");
   if (shell) shell.classList.remove("open");
+  if (toggle) toggle.setAttribute("aria-expanded", "false");
 }
 
 function toggleHintMenu() {
   const shell = document.getElementById("hintShell");
+  const toggle = document.getElementById("hintToggleBtn");
   if (!shell || shell.style.display === "none") return;
   shell.classList.toggle("open");
+  if (toggle) toggle.setAttribute("aria-expanded", shell.classList.contains("open") ? "true" : "false");
+  recordPracticeActivity();
+}
+
+function toggleManualHintOptions() {
+  const menu = document.getElementById("hintMenu");
+  const btn = document.getElementById("chooseHintBtn");
+  if (!menu || !btn) return;
+  menu.classList.toggle("manual-open");
+  const open = menu.classList.contains("manual-open");
+  btn.setAttribute("aria-expanded", open ? "true" : "false");
+  btn.textContent = open ? "Choose a hint ▴" : "Choose a hint ▾";
+}
+
+function revealNextProgressiveHint() {
+  if (gameOver || isPepdleMode) return;
+
+  const state = getPracticeHintState();
+  if (!practiceNTermHintRevealed) {
+    revealHint();
+  } else if (state.unrevealedCuts.length) {
+    revealCutSiteHint();
+  } else if (!practiceCTermHintRevealed) {
+    revealCTermHint();
+  }
+
+  triggerHintNudge("flare");
+  updateHintUI();
+  recordPracticeActivity();
+}
+
+function animateNewSequenceButton() {
+  const btn = document.getElementById("newGameBtn");
+  if (!btn || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+  btn.classList.remove("refreshing");
+  void btn.offsetWidth;
+  btn.classList.add("refreshing");
+  window.setTimeout(() => btn.classList.remove("refreshing"), 560);
+}
+
+function getEvidenceArrivalItems(box) {
+  if (!box) return [];
+
+  const preferredSelectors = [
+    ".fragment-row",
+    ".fragment-line",
+    ".evidence-row",
+    ".clue-row",
+    ".fragment",
+    ".enzyme-clue",
+    "tbody > tr"
+  ];
+
+  for (const selector of preferredSelectors) {
+    const matches = Array.from(box.querySelectorAll(selector)).filter(el => el.offsetParent !== null);
+    if (matches.length >= 2) return matches;
+  }
+
+  // Fallback: animate meaningful direct children rather than the whole card.
+  return Array.from(box.children).filter(el => {
+    if (el.offsetParent === null) return false;
+    const text = (el.textContent || "").trim();
+    return text.length > 0;
+  }).slice(0, 8);
+}
+
+function animateEvidenceRefresh() {
+  const box = document.getElementById("infoBox");
+  if (!box || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+  if (evidenceRefreshCleanupTimer !== null) {
+    window.clearTimeout(evidenceRefreshCleanupTimer);
+    evidenceRefreshCleanupTimer = null;
+  }
+
+  const items = getEvidenceArrivalItems(box);
+
+  box.classList.remove(
+    "evidence-refresh-prepare",
+    "evidence-refresh-animate"
+  );
+
+  items.forEach(item => {
+    item.classList.remove(
+      "fragment-soft-prepare",
+      "fragment-soft-animate"
+    );
+    item.style.removeProperty("--fragment-delay");
+  });
+
+  // Phase 1: place everything in its visual start state with transitions disabled.
+  box.classList.add("evidence-refresh-prepare");
+  items.forEach((item, index) => {
+    item.style.setProperty("--fragment-delay", `${index * 72}ms`);
+    item.classList.add("fragment-soft-prepare");
+  });
+
+  // Force style/layout so Chromium and Firefox both commit the start state.
+  void box.offsetWidth;
+
+  // Phase 2: on the next frame, remove prepare and animate to the settled state.
+  window.requestAnimationFrame(() => {
+    box.classList.remove("evidence-refresh-prepare");
+    box.classList.add("evidence-refresh-animate");
+
+    items.forEach(item => {
+      item.classList.remove("fragment-soft-prepare");
+      item.classList.add("fragment-soft-animate");
+    });
+  });
+
+  const total = 820 + Math.max(0, items.length - 1) * 72;
+  evidenceRefreshCleanupTimer = window.setTimeout(() => {
+    box.classList.remove(
+      "evidence-refresh-prepare",
+      "evidence-refresh-animate"
+    );
+
+    items.forEach(item => {
+      item.classList.remove(
+        "fragment-soft-prepare",
+        "fragment-soft-animate"
+      );
+      item.style.removeProperty("--fragment-delay");
+    });
+
+    evidenceRefreshCleanupTimer = null;
+  }, total);
 }
 
 function newGame() {
+  animateNewSequenceButton();
   isPepdleMode = (currentTopMode === "classic");
   const gameScreen = document.getElementById("gameScreen");
   if (gameScreen) gameScreen.classList.toggle("classic-mode", isPepdleMode);
@@ -2941,6 +3500,10 @@ function newGame() {
   gameOver = false;
   lastClassicSubmittedGuess = null;
   revealedCutHintBoundaries = [];
+  practiceNTermHintRevealed = false;
+  practiceCTermHintRevealed = false;
+  clearHintNudgeTimers();
+  lastPracticeActivityAt = Date.now();
 
   if (isPepdleMode) {
     LEN = 8;
@@ -2952,6 +3515,8 @@ function newGame() {
     document.getElementById("guessBtn").disabled = false;
     document.getElementById("hintBtn").disabled = true; // classic mode: practice hints stay unavailable
     document.getElementById("cutHintBtn").disabled = true;
+    document.getElementById("cTermHintBtn").disabled = true;
+    document.getElementById("nextHintBtn").disabled = true;
     document.getElementById("revealAnswerBtn").disabled = true;
     document.getElementById("hintShell").style.display = "none";
     closeHintMenu();
@@ -2964,6 +3529,7 @@ function newGame() {
     pepdleRevealCount = 0;
     renderPepdleInfo();
     renderResiduePool();
+    animateEvidenceRefresh();
     return;
   }
 
@@ -2987,6 +3553,8 @@ function newGame() {
   document.getElementById("hintBtn").disabled = false;
   document.getElementById("cutHintBtn").disabled = false;
   document.getElementById("cutHintBtn").textContent = "Reveal Cut Site";
+  document.getElementById("cTermHintBtn").disabled = false;
+  document.getElementById("nextHintBtn").disabled = false;
   document.getElementById("revealAnswerBtn").disabled = false;
 
   const { peptide, clues } = buildPeptideAndClues(config);
@@ -2994,6 +3562,9 @@ function newGame() {
   lastRoundClues = clues;
   renderInfo(clues, config.ordered);
   renderResiduePool();
+  animateEvidenceRefresh();
+  updateHintUI();
+  recordPracticeActivity();
 
   const activePreset = document.getElementById("presetSelect").value;
   if (activePreset !== "custom" && PRESETS[activePreset] && PRESETS[activePreset].autoRevealNTerm) {
@@ -3311,6 +3882,7 @@ function highlightFinalTermini() {
   }
 
   if (last) {
+    last.classList.remove("c-term-hint");
     last.classList.add("c-term-final");
     setTerminusSideLabel(last, "C-Term", "right", "#d9818f");
   }
@@ -3350,8 +3922,32 @@ function revealCutSiteHint() {
     btn.disabled = true;
     btn.textContent = "✂ All Cut Sites Revealed";
   }
+
+  updateHintUI();
+  triggerHintNudge("flare");
+  recordPracticeActivity();
 }
 
+function revealCTermHint() {
+  if (gameOver || isPepdleMode || practiceCTermHintRevealed) return;
+
+  const last = document.getElementById("sel" + (LEN - 1));
+  if (last) {
+    last.value = secret[LEN - 1];
+    last.classList.remove("invalid");
+    last.classList.add("c-term-hint");
+    setTerminusSideLabel(last, "C-Term", "right", "#d9818f");
+  }
+
+  practiceCTermHintRevealed = true;
+  updateDuplicateHighlights();
+  updateFragmentTracking();
+  updateResiduePool();
+  updateGhostPreview();
+  updateHintUI();
+  triggerHintNudge("flare");
+  recordPracticeActivity();
+}
 
 function animateInvalidInputRow() {
   const row = document.getElementById("inputRow");
@@ -3403,13 +3999,13 @@ function submitGuess() {
   if (isPepdleMode && !won) {
     classicUnlockedStage = syncClassicRevealToAttempts();
   }
-
   if (won) {
     setMessage("✓ Sequenced correctly", "win");
     gameOver = true;
     hideGhostRow();
     document.getElementById("guessBtn").disabled = true;
     document.getElementById("revealAnswerBtn").disabled = true;
+    clearHintNudgeTimers();
     if (!isPepdleMode) {
       const names = lastRoundClues.map(c => c.name);
       annotateCutLines("inputRow", names, true);
@@ -3446,6 +4042,9 @@ function submitGuess() {
       document.getElementById("revealAnswerBtn").disabled = true;
       document.getElementById("hintBtn").disabled = true;
       document.getElementById("cutHintBtn").disabled = true;
+      document.getElementById("cTermHintBtn").disabled = true;
+      document.getElementById("nextHintBtn").disabled = true;
+      clearHintNudgeTimers();
     }
   } else {
     const note = !isPepdleMode ? generateFeedbackNote(guess, secret, lastRoundClues.map(c => c.name)) : "";
@@ -3453,6 +4052,10 @@ function submitGuess() {
       ? ` New evidence unlocked: ${classicUnlockedStage.label}.`
       : "";
     setMessage(guessesLeft + " guess(es) left." + classicUnlockNote + (note ? " " + note : ""));
+    if (!isPepdleMode) {
+      window.setTimeout(() => triggerHintNudge("nudge"), 700);
+      recordPracticeActivity();
+    }
     for (let i = 0; i < LEN; i++) {
       const box = document.getElementById("sel" + i);
       box.value = "";
@@ -3509,14 +4112,21 @@ function revealHint() {
   updateFragmentTracking();
   updateResiduePool();
   updateGhostPreview();
+  practiceNTermHintRevealed = true;
   document.getElementById("hintBtn").disabled = true;
+  updateHintUI();
+  triggerHintNudge("flare");
+  recordPracticeActivity();
 }
 
 document.getElementById("guessBtn").addEventListener("click", submitGuess);
 document.getElementById("newGameBtn").addEventListener("click", newGame);
 document.getElementById("hintToggleBtn").addEventListener("click", toggleHintMenu);
+document.getElementById("nextHintBtn").addEventListener("click", revealNextProgressiveHint);
+document.getElementById("chooseHintBtn").addEventListener("click", toggleManualHintOptions);
 document.getElementById("hintBtn").addEventListener("click", revealHint);
 document.getElementById("cutHintBtn").addEventListener("click", revealCutSiteHint);
+document.getElementById("cTermHintBtn").addEventListener("click", revealCTermHint);
 document.getElementById("revealAnswerBtn").addEventListener("click", revealAnswer);
 document.addEventListener("click", (e) => {
   const shell = document.getElementById("hintShell");
