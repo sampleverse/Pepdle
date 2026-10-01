@@ -1,4 +1,4 @@
-# [▶ Play Pepdle Here](https://sampleverse.github.io/Pepdle/)
+# [Play Pepdle Here :3](https://sampleverse.github.io/Pepdle/)
 
 
 Biochem prelims so bad i had to go through several DNA sequencing practice sets- A funny thought came to me "What if i just made Polypeptide Sequencing into Wordle?" and so here we are with Pepdle (also i just vibecoding the living hell out of this silly program please don't hurt me)
