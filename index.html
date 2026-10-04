@@ -1840,7 +1840,7 @@
       <span class="mode-choice-arrow" aria-hidden="true">›</span>
     </button>
 
-    <div class="menu-note">A rudimentary silly doohickey currently being assembled by yours truly, Sampleverse (J.Ra)</div>
+    <div class="menu-note">A rudimentary silly doohickey currently being assembled by yours truly, Sampleverse (J.Ra) &middot; <span id="footerYear">2026</span></div>
   </div>
 </div>
 
@@ -2019,6 +2019,7 @@
 </div>
 
 <script>
+document.getElementById('footerYear').textContent = new Date().getFullYear();
 // --- Amino acid three-letter codes used in this prototype ---
 const AA_LIST = ["Ala","Arg","Asn","Asp","Cys","Gln","Glu","Gly","His","Ile",
                  "Leu","Lys","Met","Phe","Pro","Ser","Thr","Trp","Tyr","Val"];
