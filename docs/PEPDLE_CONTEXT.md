@@ -323,27 +323,27 @@ Repository:
 
 Historically GitHub Pages served root `index.html`.
 
-Local development may now include:
-- VS Code,
-- Codex,
-- Node/npm,
-- `package.json`,
-- `package-lock.json`,
-- `node_modules`,
-- `scripts`,
-- `dist`,
-- Wrangler / Cloudflare configuration,
-- WSL.
+Local development now uses:
+- VS Code connected to WSL,
+- Ubuntu under WSL2,
+- Node/npm installed inside WSL,
+- the WSL-native clone at `/home/sampleverse/projects/Pepdle`,
+- Wrangler / Cloudflare tooling,
+- `npm run dev` for local development,
+- local preview at `http://localhost:8787`.
 
-These newer files were introduced outside the earlier ChatGPT-only workflow and should be inspected before deleting or reorganizing them.
+GitHub remains the shared source of truth between ChatGPT, Codex, and local development.
 
-Recommended mental model:
-- Windows = host desktop,
-- WSL = Linux development environment,
-- VS Code = editor connected into WSL,
-- GitHub = shared source of truth between ChatGPT, Codex, and local development.
+Avoid maintaining competing Windows and WSL copies of the project as active working copies.
 
-Avoid maintaining competing Windows and WSL copies of the project.
+For meaningful UI/gameplay changes, the normal validation flow is now:
+1. edit the current source in the WSL repo,
+2. run/keep `npm run dev` active,
+3. test through the local Wrangler preview,
+4. review and refine,
+5. commit/push only after explicit approval.
+
+A separate copied preview/test file is no longer the default workflow and should only be created when explicitly requested.
 
 ## Current architecture
 The app is still largely contained in `index.html`.
@@ -398,13 +398,16 @@ Preferred workflow:
 2. recommend direction,
 3. explain tradeoffs,
 4. get approval,
-5. create test build,
-6. validate,
-7. push only after explicit approval.
+5. implement locally in the WSL development repo,
+6. validate through the local Wrangler dev server,
+7. refine if needed,
+8. commit/push only after explicit approval.
 
 “Proceed,” “go ahead,” “yes please,” and similar wording count as approval to implement.
 
-Do not push just because a test build exists.
+Do not push just because local validation succeeded.
+
+A separate copied preview/test artifact is only needed when explicitly requested.
 
 ## Rejected or intentionally avoided directions
 Preserve these unless the user revisits them:
@@ -426,7 +429,7 @@ Before calling it done:
 - syntax-check JavaScript where applicable,
 - do not claim browser testing unless it happened,
 - preserve unrelated working behavior,
-- produce a test build when appropriate,
+- validate through the local dev server when appropriate,
 - push only after explicit approval.
 
 For Pepdle UI work, consistency with the rest of the game matters as much as the feature itself.
