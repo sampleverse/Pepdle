@@ -18,7 +18,7 @@ Before changes:
 Do not assume an older local test file is newer than `main`.
 
 ## Working rules
-- Use a **test build first** for meaningful UI/gameplay changes.
+- For meaningful UI/gameplay changes, edit the WSL development repo locally and validate through the local Wrangler dev server before committing or pushing. A separate copied preview/test file is only needed when explicitly requested.
 - Do **not push to GitHub without explicit user approval**.
 - Explain direction/tradeoffs before implementation unless the user has already said to proceed.
 - Prefer cohesive, restrained polish over flashy effects.
