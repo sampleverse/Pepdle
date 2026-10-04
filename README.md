@@ -3,6 +3,20 @@
 
 Biochem prelims so bad i had to go through several DNA sequencing practice sets- A funny thought came to me "What if i just made Polypeptide Sequencing into Wordle?" and so here we are with Pepdle (also i just vibecoding the living hell out of this silly program please don't hurt me)
 
+## Local development and Cloudflare Workers
+
+Install dependencies with `npm install`, then run `npm run dev` for a local preview.
+Continue editing the root `index.html`; Wrangler runs `npm run build` automatically,
+copying the HTML and its banner image into `dist/`.
+
+Run `npm run check` to validate deployment without publishing. To publish to the
+Cloudflare Worker named `pepdle`, first run `npx wrangler login`, then `npm run deploy`.
+For Cloudflare Workers Builds, use `npm run build` as the build command and
+`npm run deploy` as the deploy command.
+
+On PowerShell systems that block npm's script shim, use `npm.cmd` and `npx.cmd`
+in place of `npm` and `npx`.
+
 ## About
 
 The goal of Pepdle is to make peptide sequencing practice more interactive and approachable.
